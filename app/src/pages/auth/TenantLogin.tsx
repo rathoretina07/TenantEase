@@ -21,7 +21,7 @@ export default function TenantLogin() {
         <div className="flex flex-col justify-center items-center px-lg py-xl sm:px-xl h-full w-full bg-surface">
           <div className="w-full max-w-[24rem] flex flex-col gap-lg">
             {/* Header */}
-            <div className="text-left flex flex-col gap-sm">
+            <div className="text-center flex flex-col items-center gap-sm">
               <div className="flex items-center gap-sm mb-xs cursor-pointer" onClick={() => navigate('/')}>
                 <span className="material-symbols-outlined text-primary text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>apartment</span>
                 <h1 className="font-h3 text-h3 text-primary">TenantEase</h1>

@@ -19,11 +19,11 @@ export default function LandlordLogin() {
       </div>
       <div className="w-full lg:w-1/2 flex items-center justify-center p-gutter sm:p-xl bg-surface">
         <div className="w-full max-w-[28rem]">
-          <div className="flex items-center gap-sm mb-xl lg:hidden cursor-pointer" onClick={() => navigate('/')}>
+          <div className="flex items-center justify-center gap-sm mb-xl lg:hidden cursor-pointer" onClick={() => navigate('/')}>
             <span className="material-symbols-outlined text-primary text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>domain</span>
             <span className="font-h3 text-h3 text-on-surface">TenantEase</span>
           </div>
-          <div className="mb-xl">
+          <div className="mb-xl text-center flex flex-col items-center">
             <h1 className="font-h2 text-h2 text-on-surface mb-xs">Welcome back</h1>
             <p className="font-body-sm text-body-sm text-on-surface-variant">Please enter your details to sign in.</p>
           </div>

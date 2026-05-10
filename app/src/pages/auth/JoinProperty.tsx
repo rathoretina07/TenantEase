@@ -49,7 +49,7 @@ export default function JoinProperty() {
               Onboarding Step 1
             </span>
             <h1 className="text-4xl md:text-5xl font-bold text-on-surface tracking-tight mb-4">Register Your Estate</h1>
-            <p className="text-on-surface-variant text-lg max-w-xl mx-auto">
+            <p className="text-on-surface-variant text-lg max-w-[36rem] mx-auto">
               Get started by listing your first property. This will serve as the foundation of your landlord profile.
             </p>
           </div>
