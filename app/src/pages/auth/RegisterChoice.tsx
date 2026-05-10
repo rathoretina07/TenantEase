@@ -115,7 +115,7 @@ export default function RegisterChoice() {
               </div>
               <Button 
                 className="w-full py-4 rounded-xl gap-sm" 
-                onClick={() => navigate('/register/tenant')}
+                onClick={() => navigate('/join-property')}
               >
                 Join Property
                 <ArrowRight size={20} />

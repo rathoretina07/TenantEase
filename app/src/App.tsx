@@ -8,6 +8,7 @@ import LandlordLogin from './pages/auth/LandlordLogin';
 import TenantLogin from './pages/auth/TenantLogin';
 import LandlordRegister from './pages/auth/LandlordRegister';
 import TenantRegister from './pages/auth/TenantRegister';
+import JoinProperty from './pages/auth/JoinProperty';
 import IdentityVerification from './pages/auth/IdentityVerification';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import TenantDashboard from './pages/tenant/Dashboard';
@@ -29,6 +30,7 @@ function App() {
         <Route path="/login/tenant" element={<TenantLogin />} />
         <Route path="/register/landlord" element={<LandlordRegister />} />
         <Route path="/register/tenant" element={<TenantRegister />} />
+        <Route path="/join-property" element={<JoinProperty />} />
         <Route path="/verify-identity" element={<IdentityVerification />} />
         
         {/* Backward Compatibility or Generic Links */}
