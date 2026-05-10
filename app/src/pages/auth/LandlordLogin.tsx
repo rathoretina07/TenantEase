@@ -8,7 +8,7 @@ export default function LandlordLogin() {
       <div className="hidden lg:flex lg:w-1/2 relative bg-surface-variant overflow-hidden items-end p-xl">
         <img alt="Real estate interior" className="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800" />
         <div className="absolute inset-0 bg-gradient-to-t from-inverse-surface/90 via-inverse-surface/40 to-transparent mix-blend-multiply"></div>
-        <div className="relative z-10 w-full max-w-lg">
+        <div className="relative z-10 w-full max-w-[32rem]">
           <div className="flex items-center gap-sm mb-lg">
             <span className="material-symbols-outlined text-primary-fixed text-[32px]" style={{ fontVariationSettings: "'FILL' 1" }}>domain</span>
             <span className="font-h2 text-h2 text-on-primary">TenantEase</span>
@@ -18,7 +18,7 @@ export default function LandlordLogin() {
         </div>
       </div>
       <div className="w-full lg:w-1/2 flex items-center justify-center p-gutter sm:p-xl bg-surface">
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-[28rem]">
           <div className="flex items-center gap-sm mb-xl lg:hidden cursor-pointer" onClick={() => navigate('/')}>
             <span className="material-symbols-outlined text-primary text-[28px]" style={{ fontVariationSettings: "'FILL' 1" }}>domain</span>
             <span className="font-h3 text-h3 text-on-surface">TenantEase</span>

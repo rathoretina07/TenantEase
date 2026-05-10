@@ -7,7 +7,7 @@ export default function TenantRegister() {
     <div className="bg-background min-h-screen flex text-on-background font-body-md antialiased">
       {/* Left Column: Form Area */}
       <div className="flex-1 flex flex-col justify-center px-lg py-xl sm:px-xl lg:flex-none lg:w-1/2 xl:w-5/12 z-10 bg-surface">
-        <div className="mx-auto w-full max-w-md">
+        <div className="mx-auto w-full max-w-[28rem]">
           {/* Brand & Header */}
           <div className="mb-xl">
             <div className="flex items-center gap-sm mb-lg cursor-pointer" onClick={() => navigate('/')}>
@@ -98,7 +98,7 @@ export default function TenantRegister() {
           <div className="absolute inset-0 bg-primary/5"></div>
         </div>
         {/* Glassmorphism Testimonial Card */}
-        <div className="absolute bottom-xl right-xl left-xl max-w-lg ml-auto">
+        <div className="absolute bottom-xl right-xl left-xl max-w-[32rem] ml-auto">
           <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/40 rounded-2xl p-xl shadow-2xl shadow-primary/10">
             <div className="flex items-center gap-md mb-md">
               <div className="flex text-amber-400">

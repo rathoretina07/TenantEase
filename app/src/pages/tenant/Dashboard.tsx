@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function TenantDashboard() {
+  const navigate = useNavigate();
   return (
     <div className="max-w-container-max mx-auto flex flex-col gap-xl pb-xl">
       {/* Page Header (Handled by DashboardLayout partially, but we can customize) */}
@@ -39,7 +42,10 @@ export default function TenantDashboard() {
               </div>
             </div>
           </div>
-          <button className="relative w-full overflow-hidden rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-body-md text-body-md font-semibold py-4 px-6 flex items-center justify-center gap-sm shadow-md transition-transform active:scale-[0.98] z-10 group">
+          <button 
+            className="relative w-full overflow-hidden rounded-lg bg-gradient-to-r from-primary to-secondary text-on-primary font-body-md text-body-md font-semibold py-4 px-6 flex items-center justify-center gap-sm shadow-md transition-transform active:scale-[0.98] z-10 group"
+            onClick={() => navigate('/tenant/payments')}
+          >
             <div className="absolute inset-0 border border-white/20 rounded-lg pointer-events-none"></div>
             <span className="material-symbols-outlined transition-transform group-hover:translate-x-1">payment</span>
             Pay Now
@@ -63,10 +69,13 @@ export default function TenantDashboard() {
         <div className="lg:col-span-2 bg-surface-container-lowest rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-outline-variant/30 flex flex-col">
           <div className="p-lg border-b border-surface-variant flex justify-between items-center">
             <h3 className="font-h3 text-h3 text-on-surface">Recent Payments</h3>
-            <a className="font-body-sm text-body-sm text-primary hover:underline flex items-center gap-xs" href="#">
+            <button 
+              className="font-body-sm text-body-sm text-primary hover:underline flex items-center gap-xs"
+              onClick={() => navigate('/tenant/payments')}
+            >
               View All
               <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </a>
+            </button>
           </div>
           <div className="p-4 flex-1">
             <table className="w-full text-left font-body-sm text-body-sm">

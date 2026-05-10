@@ -14,25 +14,27 @@ export default function RegisterChoice() {
       <div className="w-full max-w-container-max grid grid-cols-1 lg:grid-cols-2 gap-xl items-center relative z-10 mx-auto px-lg">
         {/* Left Branding Column */}
         <div className="hidden lg:flex flex-col justify-center space-y-xl pr-xl">
-          <div className="space-y-lg max-w-xl">
-            <div className="flex items-center gap-sm">
+          <div className="space-y-lg max-w-[36rem]">
+            <div className="flex items-center gap-sm cursor-pointer" onClick={() => navigate('/')}>
               <div className="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center">
                 <Building2 className="text-primary" size={32} />
               </div>
               <span className="text-3xl font-bold text-primary">TenantEase</span>
             </div>
             
-            <div className="space-y-md">
+            <div className="space-y-lg">
               <h1 className="text-6xl font-bold text-on-background leading-[1.1] tracking-tight">
                 Start your journey with <span className="text-primary">TenantEase.</span>
               </h1>
-              <p className="text-xl text-on-surface-variant leading-relaxed">
-                Choose the account type that fits your needs and join a community of modern property managers and happy residents.
-              </p>
+              <div className="w-full">
+                <p className="text-xl text-on-surface-variant leading-relaxed max-w-[28rem]">
+                  Choose the account type that fits your needs and join a community of modern property managers and happy residents.
+                </p>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-lg pt-md max-w-lg">
+          <div className="flex flex-col gap-lg pt-md max-w-[32rem]">
             <div className="flex items-start gap-md">
               <div className="w-12 h-12 rounded-xl bg-surface-container-high flex items-center justify-center shrink-0">
                 <ShieldCheck className="text-primary" size={24} />

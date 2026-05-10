@@ -8,7 +8,7 @@ export default function Landing() {
       {/* TopNavBar */}
       <nav className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg py-md max-w-container-max mx-auto bg-surface/80 dark:bg-on-background/80 backdrop-blur-lg border-b border-white/20 dark:border-white/10 shadow-sm">
         <div className="flex items-center gap-md">
-          <span className="text-h2 font-h2 text-primary dark:text-primary-fixed">TenantEase</span>
+          <span className="text-h2 font-h2 text-primary dark:text-primary-fixed cursor-pointer" onClick={() => navigate('/')}>TenantEase</span>
           <div className="hidden md:flex gap-lg ml-xl">
             <a className="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Features</a>
             <a className="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">How it Works</a>
@@ -17,7 +17,7 @@ export default function Landing() {
           </div>
         </div>
         <div className="flex items-center gap-md">
-          <button className="px-md py-sm text-primary font-bold active:scale-95 transition-all duration-150" onClick={() => navigate('/welcome')}>Login</button>
+          <button className="px-md py-sm text-primary font-bold active:scale-95 transition-all duration-150" onClick={() => navigate('/auth-choice')}>Login</button>
           <button 
             className="px-lg py-sm primary-gradient text-on-primary rounded-xl font-bold active:scale-95 transition-all duration-150 inner-glow shadow-sm"
             onClick={() => navigate('/register-choice')}
@@ -30,7 +30,7 @@ export default function Landing() {
       <main className="pt-32">
         {/* Hero Section */}
         <section className="max-w-container-max mx-auto px-lg mb-32">
-          <div className="text-center max-w-3xl mx-auto mb-xl">
+          <div className="text-center max-w-[48rem] mx-auto mb-xl">
             <h1 className="font-h1 text-[48px] md:text-[64px] leading-tight mb-md text-on-background">Manage your properties with functional elegance</h1>
             <p className="font-body-md text-on-surface-variant mb-xl leading-relaxed">
               The technical precision of a high-performance tool combined with the warmth of hospitality. Streamline your portfolio, payments, and tenant relations in one beautiful interface.
@@ -47,7 +47,7 @@ export default function Landing() {
           </div>
 
           {/* UI Mockup (Glassmorphic Dashboard Preview) */}
-          <div className="relative mt-20 max-w-5xl mx-auto rounded-xl overflow-hidden soft-shadow bg-surface-container-low border border-outline-variant">
+          <div className="relative mt-20 max-w-[64rem] mx-auto rounded-xl overflow-hidden soft-shadow bg-surface-container-low border border-outline-variant">
             <div className="flex">
               {/* Sidebar Mockup */}
               <div className="w-16 md:w-64 bg-surface-container border-r border-outline-variant h-[500px] p-md flex flex-col gap-sm">
@@ -236,7 +236,7 @@ export default function Landing() {
             <span className="material-symbols-outlined text-[400px] absolute -right-20 -top-20">format_quote</span>
           </div>
           <div className="max-w-container-max mx-auto px-lg relative z-10">
-            <div className="max-w-4xl mx-auto text-center">
+            <div className="max-w-[56rem] mx-auto text-center">
               <div className="flex justify-center gap-xs mb-lg">
                 <span className="material-symbols-outlined text-secondary-fixed">star</span>
                 <span className="material-symbols-outlined text-secondary-fixed">star</span>
@@ -264,7 +264,7 @@ export default function Landing() {
             <div className="primary-gradient p-20 rounded-[40px] text-center text-on-primary soft-shadow overflow-hidden relative">
               <div className="relative z-10">
                 <h2 className="font-h1 text-[48px] mb-md">Ready to elevate your management experience?</h2>
-                <p className="text-h3 opacity-90 mb-xl max-w-2xl mx-auto">Join over 500+ property managers who have transformed their portfolio operations with functional elegance.</p>
+                <p className="text-h3 opacity-90 mb-xl max-w-[42rem] mx-auto">Join over 500+ property managers who have transformed their portfolio operations with functional elegance.</p>
                 <div className="flex flex-col md:flex-row justify-center gap-md">
                   <button 
                     className="px-xl py-md bg-white text-primary rounded-xl font-bold text-h3 soft-shadow transition-transform hover:scale-105"

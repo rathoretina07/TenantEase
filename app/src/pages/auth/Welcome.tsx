@@ -43,37 +43,37 @@ export default function Welcome() {
           {/* Task List */}
           <div className="space-y-md mb-xl">
             {/* Task 1: Complete Profile */}
-            <div className="group flex items-start gap-md p-md rounded-xl hover:bg-surface-container-low transition-colors duration-200 border border-transparent hover:border-outline-variant/30 cursor-pointer">
-              <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-full bg-primary-container/10 flex items-center justify-center group-hover:bg-primary-container/20 transition-colors">
+            <div className="group flex items-center gap-md p-md rounded-xl hover:bg-surface-container-low transition-colors duration-200 border border-transparent hover:border-outline-variant/30 cursor-pointer">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-container/10 flex items-center justify-center group-hover:bg-primary-container/20 transition-colors">
                 <span className="material-symbols-outlined text-primary text-[18px]">person</span>
               </div>
               <div>
                 <h3 className="font-h3 text-h3 text-on-surface text-[16px]">Complete Profile</h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Add your contact details and company information to personalize your account.</p>
               </div>
-              <span className="material-symbols-outlined text-outline-variant ml-auto mt-2 group-hover:text-primary transition-colors">chevron_right</span>
+              <span className="material-symbols-outlined text-outline-variant ml-auto group-hover:text-primary transition-colors">chevron_right</span>
             </div>
             {/* Task 2: Add Property */}
-            <div className="group flex items-start gap-md p-md rounded-xl hover:bg-surface-container-low transition-colors duration-200 border border-transparent hover:border-outline-variant/30 cursor-pointer" onClick={() => navigate('/manager/properties')}>
-              <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-full bg-tertiary-container/10 flex items-center justify-center group-hover:bg-tertiary-container/20 transition-colors">
+            <div className="group flex items-center gap-md p-md rounded-xl hover:bg-surface-container-low transition-colors duration-200 border border-transparent hover:border-outline-variant/30 cursor-pointer" onClick={() => navigate('/manager/properties')}>
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-tertiary-container/10 flex items-center justify-center group-hover:bg-tertiary-container/20 transition-colors">
                 <span className="material-symbols-outlined text-tertiary text-[18px]">domain</span>
               </div>
               <div>
                 <h3 className="font-h3 text-h3 text-on-surface text-[16px]">Add Your First Property</h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Set up your first rental unit to start managing leases and collecting payments.</p>
               </div>
-              <span className="material-symbols-outlined text-outline-variant ml-auto mt-2 group-hover:text-tertiary transition-colors">chevron_right</span>
+              <span className="material-symbols-outlined text-outline-variant ml-auto group-hover:text-tertiary transition-colors">chevron_right</span>
             </div>
             {/* Task 3: Invite Tenant */}
-            <div className="group flex items-start gap-md p-md rounded-xl hover:bg-surface-container-low transition-colors duration-200 border border-transparent hover:border-outline-variant/30 cursor-pointer">
-              <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-full bg-secondary-container/10 flex items-center justify-center group-hover:bg-secondary-container/20 transition-colors">
+            <div className="group flex items-center gap-md p-md rounded-xl hover:bg-surface-container-low transition-colors duration-200 border border-transparent hover:border-outline-variant/30 cursor-pointer">
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-secondary-container/10 flex items-center justify-center group-hover:bg-secondary-container/20 transition-colors">
                 <span className="material-symbols-outlined text-secondary text-[18px]">group_add</span>
               </div>
               <div>
                 <h3 className="font-h3 text-h3 text-on-surface text-[16px]">Invite a Tenant</h3>
                 <p className="font-body-sm text-body-sm text-on-surface-variant mt-1">Send an invitation to your tenant so they can access their dedicated portal.</p>
               </div>
-              <span className="material-symbols-outlined text-outline-variant ml-auto mt-2 group-hover:text-secondary transition-colors">chevron_right</span>
+              <span className="material-symbols-outlined text-outline-variant ml-auto group-hover:text-secondary transition-colors">chevron_right</span>
             </div>
           </div>
 

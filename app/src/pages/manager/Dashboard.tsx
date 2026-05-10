@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function ManagerDashboard() {
+  const navigate = useNavigate();
   return (
     <div className="max-w-container-max mx-auto flex flex-col gap-xl pb-xl">
       {/* Page Header */}
@@ -176,7 +179,12 @@ export default function ManagerDashboard() {
       <div className="bg-surface-container-lowest rounded-xl soft-shadow border border-outline-variant/30 overflow-hidden flex flex-col">
         <div className="p-lg border-b border-surface-container-highest flex justify-between items-center bg-surface/50">
           <h3 className="font-h3 text-h3 text-on-surface">Recent Payments</h3>
-          <button className="text-primary font-body-sm text-body-sm font-semibold hover:underline">View All</button>
+          <button 
+            className="text-primary font-body-sm text-body-sm font-semibold hover:underline"
+            onClick={() => navigate('/manager/payments')}
+          >
+            View All
+          </button>
         </div>
         <div className="p-4 overflow-x-auto">
           <table className="w-full text-left border-collapse">

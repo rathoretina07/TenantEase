@@ -67,8 +67,8 @@ export default function IdentityVerification() {
             </div>
           </div>
           {/* Trust & Security Notice */}
-          <div className="bg-surface-container-low rounded-lg p-md flex items-start gap-md border border-outline-variant/30">
-            <span className="material-symbols-outlined text-secondary-container mt-[2px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified_user</span>
+          <div className="bg-surface-container-low rounded-lg p-md flex items-center gap-md border border-outline-variant/30">
+            <span className="material-symbols-outlined text-secondary-container" style={{ fontVariationSettings: "'FILL' 1" }}>verified_user</span>
             <div className="flex flex-col gap-xs">
               <span className="font-body-md text-body-md font-semibold text-on-surface">UIDAI Compliant Security</span>
               <span className="font-body-sm text-body-sm text-on-surface-variant text-xs leading-relaxed">Your documents are processed with bank-level 256-bit encryption. We do not store your physical document images after verification is complete.</span>

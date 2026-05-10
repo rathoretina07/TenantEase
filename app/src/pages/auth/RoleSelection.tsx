@@ -13,14 +13,14 @@ export default function RoleSelection() {
         <div className="w-full max-w-container-max grid grid-cols-1 lg:grid-cols-2 gap-lg items-center relative z-10">
           {/* Left Branding Column */}
           <div className="hidden lg:flex flex-col space-y-lg pr-xl">
-            <div className="flex items-center gap-sm">
+            <div className="flex items-center gap-sm cursor-pointer" onClick={() => navigate('/')}>
               <span className="material-symbols-outlined text-[40px] text-primary">real_estate_agent</span>
               <span className="font-h2 text-h2 text-primary">TenantEase</span>
             </div>
-            <h1 className="font-h1 text-h1 text-on-background max-w-md">
+            <h1 className="font-h1 text-h1 text-on-background max-w-[28rem]">
               Seamless property management for the <span className="text-primary">modern world.</span>
             </h1>
-            <p className="text-on-surface-variant font-body-md max-w-sm">
+            <p className="text-on-surface-variant font-body-md max-w-[24rem]">
               A unified platform designed to bridge the gap between landlords and tenants with transparency and efficiency.
             </p>
             <div className="flex flex-col gap-md pt-md">
@@ -116,9 +116,15 @@ export default function RoleSelection() {
               </div>
 
               {/* Footer Help Links */}
-              <div className="flex justify-center gap-lg pt-md">
-                <a className="text-body-sm text-primary hover:underline font-medium" href="#">Need help?</a>
-                <a className="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+              <div className="flex flex-col items-center gap-md pt-md">
+                <p className="text-body-sm text-on-surface-variant">
+                  New to TenantEase? 
+                  <button onClick={() => navigate('/register-choice')} className="ml-1 text-primary hover:underline font-bold">Create Account</button>
+                </p>
+                <div className="flex justify-center gap-lg">
+                  <a className="text-body-sm text-primary hover:underline font-medium" href="#">Need help?</a>
+                  <a className="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+                </div>
               </div>
             </div>
 

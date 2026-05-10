@@ -66,13 +66,14 @@ export default function TenantPayments() {
       {/* Transaction History Table */}
       <div className="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant overflow-hidden flex flex-col">
         <div className="p-lg border-b border-outline-variant flex items-center justify-between bg-surface-bright">
-          <h2 className="font-h2 text-h2 text-on-background">Transaction History</h2>
+        <h2 className="font-h2 text-h2 text-on-background">Transaction History</h2>
+        <div className="flex items-center gap-md">
           <button className="flex items-center gap-xs font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors">
             <span className="material-symbols-outlined text-[18px]">filter_list</span>
             Filter
           </button>
         </div>
-        <div className="overflow-x-auto">
+        </div>        <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-surface-container-low border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">

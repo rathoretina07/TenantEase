@@ -16,7 +16,7 @@ export default function LandlordRegister() {
               <span className="font-h2 text-h2 text-primary">TenantEase</span>
             </div>
           </div>
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-[28rem]">
             {/* Progress Indicator */}
             <div className="mb-lg">
               <div className="flex items-center gap-2 mb-sm">
@@ -97,7 +97,7 @@ export default function LandlordRegister() {
           {/* Content Container */}
           <div className="absolute inset-0 z-10 flex flex-col justify-center items-center p-xl">
             {/* Floating Glass Card (Abstract UI Representation) */}
-            <div className="w-full max-w-lg bg-white/70 backdrop-blur-xl border border-white/40 rounded-xl shadow-[0_32px_64px_-16px_rgba(53,37,205,0.1)] p-lg transform rotate-2 hover:rotate-0 transition-transform duration-700 ease-out">
+            <div className="w-full max-w-[32rem] bg-white/70 backdrop-blur-xl border border-white/40 rounded-xl shadow-[0_32px_64px_-16px_rgba(53,37,205,0.1)] p-lg transform rotate-2 hover:rotate-0 transition-transform duration-700 ease-out">
               <div className="flex items-center gap-md mb-lg">
                 <div className="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center">
                   <span className="material-symbols-outlined text-primary text-[24px]">verified</span>
@@ -123,7 +123,7 @@ export default function LandlordRegister() {
               </div>
             </div>
             {/* Testimonial/Value Prop */}
-            <div className="mt-xl max-w-md text-center">
+            <div className="mt-xl max-w-[28rem] text-center">
               <p className="font-h2 text-h2 text-on-surface mb-md">"TenantEase transformed how we handle our portfolio. Everything is transparent and fast."</p>
               <div className="flex items-center justify-center gap-sm">
                 <img alt="Sarah Jenkins" className="w-10 h-10 rounded-full border-2 border-white shadow-sm object-cover" src="https://i.pravatar.cc/150?u=sarah" />

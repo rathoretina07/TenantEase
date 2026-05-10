@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Sidebar } from './Sidebar';
 
 interface DashboardLayoutProps {
@@ -8,6 +8,7 @@ interface DashboardLayoutProps {
 }
 
 export function DashboardLayout({ type, profileImg }: DashboardLayoutProps) {
+  const navigate = useNavigate();
   const managerItems = [
     { icon: 'dashboard', label: 'Dashboard', href: '/manager/dashboard' },
     { icon: 'domain', label: 'Properties', href: '/manager/properties' },
@@ -39,7 +40,7 @@ export function DashboardLayout({ type, profileImg }: DashboardLayoutProps) {
           </button>
           
           {/* Search Bar */}
-          <div className="flex-1 max-w-md hidden sm:flex">
+          <div className="flex-1 max-w-[28rem] hidden sm:flex">
             <div className="relative w-full group">
               <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
               <input className="w-full bg-[#F3F4F6] focus:bg-surface-container-lowest text-on-surface font-body-sm text-body-sm rounded-lg pl-10 pr-4 py-2 border-transparent focus:border-transparent focus:ring-2 focus:ring-primary-container transition-all placeholder:text-outline placeholder:font-body-sm outline-none" placeholder="Search..." type="text"/>
@@ -47,7 +48,12 @@ export function DashboardLayout({ type, profileImg }: DashboardLayoutProps) {
           </div>
           
           <div className="flex-1 sm:hidden flex justify-center">
-            <span className="font-h3 text-h3 text-indigo-600 dark:text-indigo-400 font-bold tracking-tight">TenantEase</span>
+            <span 
+              className="font-h3 text-h3 text-indigo-600 dark:text-indigo-400 font-bold tracking-tight cursor-pointer"
+              onClick={() => navigate('/')}
+            >
+              TenantEase
+            </span>
           </div>
 
           {/* Trailing Actions */}

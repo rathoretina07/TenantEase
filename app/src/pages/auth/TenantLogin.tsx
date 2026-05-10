@@ -11,7 +11,7 @@ export default function TenantLogin() {
           <img alt="" className="absolute inset-0 w-full h-full object-cover" src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" />
           {/* Subtle Overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-on-background/80 via-transparent to-transparent flex flex-col justify-end p-xl">
-            <div className="max-w-md">
+            <div className="max-w-[28rem]">
               <h2 className="font-h2 text-h2 text-on-primary mb-sm">Your Home, Managed Effortlessly.</h2>
               <p className="font-body-md text-body-md text-on-primary/80">Access your lease details, submit maintenance requests, and pay rent securely—all from one elegant dashboard.</p>
             </div>
@@ -19,7 +19,7 @@ export default function TenantLogin() {
         </div>
         {/* Right Panel: Login Form */}
         <div className="flex flex-col justify-center items-center px-lg py-xl sm:px-xl h-full w-full bg-surface">
-          <div className="w-full max-w-sm flex flex-col gap-lg">
+          <div className="w-full max-w-[24rem] flex flex-col gap-lg">
             {/* Header */}
             <div className="text-left flex flex-col gap-sm">
               <div className="flex items-center gap-sm mb-xs cursor-pointer" onClick={() => navigate('/')}>

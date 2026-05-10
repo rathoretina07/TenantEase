@@ -19,7 +19,7 @@ export default function Register() {
             </div>
           </div>
 
-          <div className="w-full max-w-md">
+          <div className="w-full max-w-[28rem]">
             {/* Progress Indicator */}
             <div className="mb-8">
               <div className="flex items-center gap-2 mb-2">
@@ -130,7 +130,7 @@ export default function Register() {
           {/* Content Container */}
           <div className="absolute inset-0 z-10 flex flex-col justify-center items-center p-16">
             {/* Floating Glass Card (Abstract UI Representation) */}
-            <div className="w-full max-w-lg bg-white/70 backdrop-blur-xl border border-white/40 rounded-xl shadow-2xl p-8 transform rotate-2 hover:rotate-0 transition-transform duration-700 ease-out">
+            <div className="w-full max-w-[32rem] bg-white/70 backdrop-blur-xl border border-white/40 rounded-xl shadow-2xl p-8 transform rotate-2 hover:rotate-0 transition-transform duration-700 ease-out">
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center">
                   <span className="material-symbols-outlined text-primary text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
@@ -158,7 +158,7 @@ export default function Register() {
             </div>
 
             {/* Testimonial/Value Prop */}
-            <div className="mt-16 max-w-md text-center">
+            <div className="mt-16 max-w-[28rem] text-center">
               <p className="text-2xl font-bold text-on-surface mb-6 italic leading-snug">"TenantEase transformed how we handle our portfolio. Everything is transparent and fast."</p>
               <div className="flex items-center justify-center gap-3">
                 <img 
