@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TenantEase | Property Management with Functional Elegance</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#464555",
+                      "on-secondary-fixed-variant": "#5516be",
+                      "on-primary": "#ffffff",
+                      "secondary": "#6b38d4",
+                      "error": "#ba1a1a",
+                      "inverse-primary": "#c3c0ff",
+                      "primary": "#3525cd",
+                      "on-tertiary-fixed": "#001f26",
+                      "outline-variant": "#c7c4d8",
+                      "surface-dim": "#d3daea",
+                      "primary-container": "#4f46e5",
+                      "on-error-container": "#93000a",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-fixed": "#23005c",
+                      "on-secondary-container": "#fffbff",
+                      "surface": "#f9f9ff",
+                      "secondary-fixed-dim": "#d0bcff",
+                      "on-tertiary": "#ffffff",
+                      "tertiary-container": "#006a7c",
+                      "tertiary": "#00505f",
+                      "surface-tint": "#4d44e3",
+                      "inverse-surface": "#2a313d",
+                      "surface-container-highest": "#dce2f3",
+                      "surface-bright": "#f9f9ff",
+                      "primary-fixed": "#e2dfff",
+                      "outline": "#777587",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#8455ef",
+                      "on-primary-fixed-variant": "#3323cc",
+                      "inverse-on-surface": "#ebf1ff",
+                      "surface-container-low": "#f0f3ff",
+                      "on-primary-container": "#dad7ff",
+                      "on-primary-fixed": "#0f0069",
+                      "surface-container-high": "#e2e8f8",
+                      "on-background": "#151c27",
+                      "tertiary-fixed-dim": "#4cd7f6",
+                      "on-tertiary-container": "#93e8ff",
+                      "on-surface": "#151c27",
+                      "surface-variant": "#dce2f3",
+                      "secondary-fixed": "#e9ddff",
+                      "tertiary-fixed": "#acedff",
+                      "surface-container": "#e7eefe",
+                      "background": "#f9f9ff",
+                      "primary-fixed-dim": "#c3c0ff",
+                      "on-tertiary-fixed-variant": "#004e5c",
+                      "on-error": "#ffffff",
+                      "error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "gutter": "24px",
+                      "sm": "8px",
+                      "md": "16px",
+                      "unit": "4px",
+                      "xl": "40px",
+                      "lg": "24px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "h3": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "h1": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "body-md": ["Inter"],
+                      "h2": ["Inter"]
+              },
+              "fontSize": {
+                      "h3": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "h1": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "500"}],
+                      "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-effect {
+            backdrop-filter: blur(12px);
+            background-color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .soft-shadow {
+            box-shadow: 0 10px 30px -5px rgba(53, 37, 205, 0.15);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #3525cd 0%, #6b38d4 100%);
+        }
+        .inner-glow {
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg py-md max-w-container-max mx-auto bg-surface/80 dark:bg-on-background/80 backdrop-blur-lg border-b border-white/20 dark:border-white/10 shadow-sm">
+<div class="flex items-center gap-md">
+<span class="text-h2 font-h2 text-primary dark:text-primary-fixed">TenantEase</span>
+<div class="hidden md:flex gap-lg ml-xl">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Features</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">How it Works</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Testimonials</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors duration-200" href="#">Pricing</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="px-md py-sm text-primary font-bold active:scale-95 transition-all duration-150">Request Demo</button>
+<button class="px-lg py-sm primary-gradient text-on-primary rounded-xl font-bold active:scale-95 transition-all duration-150 inner-glow shadow-sm">Sign Up</button>
+</div>
+</nav>
+<main class="pt-32">
+<!-- Hero Section -->
+<section class="max-w-container-max mx-auto px-lg mb-32">
+<div class="text-center max-w-3xl mx-auto mb-xl">
+<h1 class="font-h1 text-[48px] md:text-[64px] leading-tight mb-md text-on-background">Manage your properties with functional elegance</h1>
+<p class="font-body-md text-on-surface-variant mb-xl leading-relaxed">
+                    The technical precision of a high-performance tool combined with the warmth of hospitality. Streamline your portfolio, payments, and tenant relations in one beautiful interface.
+                </p>
+<div class="flex flex-col md:flex-row justify-center gap-md">
+<button class="px-xl py-md primary-gradient text-on-primary rounded-xl font-bold text-h3 inner-glow soft-shadow transition-transform hover:-translate-y-1">Get Started for Free</button>
+<button class="px-xl py-md bg-surface-container-lowest border border-outline-variant text-on-surface rounded-xl font-bold text-h3 transition-all hover:bg-surface-container">Watch Demo</button>
+</div>
+</div>
+<!-- UI Mockup (Glassmorphic Dashboard Preview) -->
+<div class="relative mt-20 max-w-5xl mx-auto rounded-xl overflow-hidden soft-shadow bg-surface-container-low border border-outline-variant">
+<div class="flex">
+<!-- Sidebar Mockup -->
+<div class="w-16 md:w-64 bg-surface-container border-r border-outline-variant h-[500px] p-md flex flex-col gap-sm">
+<div class="w-10 h-10 primary-gradient rounded-lg mb-md"></div>
+<div class="h-10 bg-surface-container-lowest rounded-lg flex items-center px-sm gap-sm border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary" data-icon="dashboard">dashboard</span>
+<span class="hidden md:block font-body-sm text-on-surface">Dashboard</span>
+</div>
+<div class="h-10 rounded-lg flex items-center px-sm gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="apartment">apartment</span>
+<span class="hidden md:block font-body-sm text-on-surface-variant">Properties</span>
+</div>
+<div class="h-10 rounded-lg flex items-center px-sm gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="payments">payments</span>
+<span class="hidden md:block font-body-sm text-on-surface-variant">Rentals</span>
+</div>
+</div>
+<!-- Main Content Mockup -->
+<div class="flex-1 p-xl">
+<div class="flex justify-between items-end mb-xl">
+<div>
+<h2 class="font-h2 text-on-background">Portfolio Performance</h2>
+<p class="text-body-sm text-on-surface-variant">Overview for June 2024</p>
+</div>
+<div class="flex gap-sm">
+<div class="w-32 h-10 bg-surface-container-lowest border border-outline-variant rounded-lg"></div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant soft-shadow">
+<p class="text-label-caps text-on-surface-variant">TOTAL REVENUE</p>
+<div class="flex items-baseline gap-xs mt-xs">
+<h2 class="font-h1 text-primary">₹8,45,200</h2>
+<span class="text-body-sm text-tertiary font-bold">+12%</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant soft-shadow">
+<p class="text-label-caps text-on-surface-variant">OCCUPANCY</p>
+<div class="flex items-baseline gap-xs mt-xs">
+<h2 class="font-h1 text-on-background">94.2%</h2>
+<span class="text-body-sm text-tertiary font-bold">+2.1%</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-lg rounded-xl border border-outline-variant soft-shadow">
+<p class="text-label-caps text-on-surface-variant">MAINTENANCE</p>
+<div class="flex items-baseline gap-xs mt-xs">
+<h2 class="font-h1 text-on-background">3 Open</h2>
+<span class="text-body-sm text-error font-bold">Alert</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden">
+<div class="p-md bg-surface-container-low border-b border-outline-variant flex justify-between">
+<span class="font-bold">Recent Payments</span>
+<span class="text-primary font-bold text-body-sm">View All</span>
+</div>
+<div class="p-lg">
+<div class="space-y-md">
+<div class="flex items-center justify-between py-xs border-b border-outline-variant/30">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high"></div>
+<div>
+<p class="font-bold">Ananya Sharma</p>
+<p class="text-body-sm text-on-surface-variant">Flat 402, Skyview</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold">₹45,000</p>
+<span class="px-sm py-1 bg-tertiary/10 text-tertiary text-[10px] font-bold rounded-full uppercase">Paid</span>
+</div>
+</div>
+<div class="flex items-center justify-between py-xs">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-surface-container-high"></div>
+<div>
+<p class="font-bold">Rahul Verma</p>
+<p class="text-body-sm text-on-surface-variant">Flat 101, Oak Ridge</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-bold">₹32,500</p>
+<span class="px-sm py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase">Processing</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Image Overlay for visual interest -->
+<div class="absolute -bottom-10 -right-10 w-64 h-64 primary-gradient rounded-full blur-[100px] opacity-20"></div>
+</div>
+</section>
+<!-- Features Section -->
+<section class="bg-surface-container-low py-32">
+<div class="max-w-container-max mx-auto px-lg">
+<div class="text-center mb-24">
+<span class="text-primary font-bold text-label-caps uppercase tracking-widest">Capabilities</span>
+<h2 class="font-h1 text-[40px] text-on-background mt-sm">Built for high-performance management</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-xl">
+<!-- Feature 1 -->
+<div class="bg-surface-container-lowest p-xl rounded-xl soft-shadow border border-white hover:-translate-y-2 transition-transform">
+<div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-lg">
+<span class="material-symbols-outlined text-primary text-[32px]" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+<h3 class="font-h3 text-on-background mb-md">Portfolio Overview</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                            A centralized command center for your entire property asset portfolio. Track occupancy rates, net yields, and market valuations in real-time.
+                        </p>
+</div>
+<!-- Feature 2 -->
+<div class="bg-surface-container-lowest p-xl rounded-xl soft-shadow border border-white hover:-translate-y-2 transition-transform">
+<div class="w-14 h-14 bg-tertiary/10 rounded-xl flex items-center justify-center mb-lg">
+<span class="material-symbols-outlined text-tertiary text-[32px]" data-icon="payments">payments</span>
+</div>
+<h3 class="font-h3 text-on-background mb-md">Automated Payments (₹)</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                            Eliminate the hassle of chasing rent. Our system automates invoicing, receipt generation, and UPI/Bank transfers with instant notifications.
+                        </p>
+</div>
+<!-- Feature 3 -->
+<div class="bg-surface-container-lowest p-xl rounded-xl soft-shadow border border-white hover:-translate-y-2 transition-transform">
+<div class="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-lg">
+<span class="material-symbols-outlined text-secondary text-[32px]" data-icon="build">build</span>
+</div>
+<h3 class="font-h3 text-on-background mb-md">Maintenance Triage</h3>
+<p class="text-on-surface-variant leading-relaxed">
+                            Smart request handling that categorizes issues and assigns local vendors automatically. Keep tenants happy with transparent progress tracking.
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- How It Works Section -->
+<section class="py-32 max-w-container-max mx-auto px-lg">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+<div>
+<h2 class="font-h1 text-[40px] text-on-background mb-xl">Seamlessly transition to modern management</h2>
+<div class="space-y-xl">
+<div class="flex gap-lg">
+<div class="w-12 h-12 rounded-full primary-gradient text-on-primary flex items-center justify-center font-bold flex-shrink-0">1</div>
+<div>
+<h4 class="font-h3 text-on-background">Add your properties</h4>
+<p class="text-on-surface-variant mt-xs">Bulk upload your portfolio details or add them individually. Our intelligent parser extracts data from your existing spreadsheets.</p>
+</div>
+</div>
+<div class="flex gap-lg">
+<div class="w-12 h-12 rounded-full primary-gradient text-on-primary flex items-center justify-center font-bold flex-shrink-0">2</div>
+<div>
+<h4 class="font-h3 text-on-background">Invite your tenants</h4>
+<p class="text-on-surface-variant mt-xs">Send personalized invitations to your tenants. They get access to a sleek portal for payments and communication.</p>
+</div>
+</div>
+<div class="flex gap-lg">
+<div class="w-12 h-12 rounded-full primary-gradient text-on-primary flex items-center justify-center font-bold flex-shrink-0">3</div>
+<div>
+<h4 class="font-h3 text-on-background">Automate your workflow</h4>
+<p class="text-on-surface-variant mt-xs">Set your rules for late fees, auto-replies, and vendor assignments. Relax as TenantEase handles the operational heavy lifting.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="bg-surface-container-high rounded-3xl aspect-square overflow-hidden soft-shadow">
+<img alt="Managing properties effortlessly" class="w-full h-full object-cover" data-alt="A professional property manager in a high-end, light-filled modern office, looking at a minimalist dashboard on a sleek tablet. The room features glass walls, contemporary furniture, and a sophisticated indigo and white color palette. The atmosphere is calm, efficient, and technologically advanced, emphasizing a premium hospitality-inspired service." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCE-lokIHj4lH4zohGMKqWp7pvveI2JlkvZKzH2LuKMxlhSzvvZnavp9npkK7AfeSfgZQctWYWPX5u3OR7KnwaW3MJS6E0g4qzgRSM4yfKBEMVJTG1ivcHhHNQJYV0ok9XMkUVBlr10gnTMjizuo0qSeRtP4J2m99FYqGypACNDcWCavWaPtSdtAptvhToNo1wmJ95QbLBtllyQO0gpnIYeDn4LJthNYOqCeIhRHw7xEHqk_m3sUdqAMlwL7zHMaJceBnBlumxls0o"/>
+</div>
+<!-- Decorative Element -->
+<div class="absolute -top-12 -left-12 w-48 h-48 glass-effect rounded-2xl p-lg soft-shadow flex flex-col justify-center">
+<span class="material-symbols-outlined text-primary text-[40px] mb-xs" data-icon="verified">verified</span>
+<p class="font-bold text-on-background">100% Secure</p>
+<p class="text-body-sm text-on-surface-variant">Enterprise Grade</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonial Section -->
+<section class="py-32 bg-primary text-on-primary overflow-hidden relative">
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-10">
+<span class="material-symbols-outlined text-[400px] absolute -right-20 -top-20" data-icon="format_quote">format_quote</span>
+</div>
+<div class="max-w-container-max mx-auto px-lg relative z-10">
+<div class="max-w-4xl mx-auto text-center">
+<div class="flex justify-center gap-xs mb-lg">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="star" data-weight="fill">star</span>
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="star" data-weight="fill">star</span>
+</div>
+<p class="font-h1 text-[32px] md:text-[40px] leading-snug mb-xl italic">
+                        "Switching to TenantEase was like moving from a ledger book to a flight deck. We've seen a 40% reduction in late payments and reclaimed hours of administrative time every week."
+                    </p>
+<div class="flex flex-col items-center">
+<div class="w-16 h-16 rounded-full border-2 border-on-primary mb-md overflow-hidden">
+<img alt="Vikas Mehta" data-alt="Close up portrait of a successful South Asian male property manager in his late 40s. He is wearing a professional navy blue suit and smiling confidently. The lighting is soft and warm, suggesting a hospitality-focused business leader in a modern setting. The aesthetic is clean and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCk5MAtTUP9emernE6Fp0c8jE7vMIgEjjlb2bI2hjxTXtDNcowrH2F1hqamuz2wHJd9gVM5WYOkQ-G9k-BxlVu8ZbQPm4WukpW1Ih0_8vxbEGKR-94uuxcfmvh1rhglKz7mgoI9IM0mJnGHIJkYms7qXUWUmTrJsCiat1ZxY7J4VSWz0D16EwMD3Xk8TLDhNKFxbs21JVUELPuDtJupJKYFlUTo-7k4y5zyG1xdLWstB0jANkjCubce5Er56Le60Xe0kaWPQ7fM-u0"/>
+</div>
+<p class="font-bold text-h3">Vikas Mehta</p>
+<p class="text-primary-fixed opacity-80 uppercase tracking-widest text-label-caps mt-xs">Operations Director, Elite Residences</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Final CTA Section -->
+<section class="py-32">
+<div class="max-w-container-max mx-auto px-lg">
+<div class="primary-gradient p-20 rounded-[40px] text-center text-on-primary soft-shadow overflow-hidden relative">
+<div class="relative z-10">
+<h2 class="font-h1 text-[48px] mb-md">Ready to elevate your management experience?</h2>
+<p class="text-h3 opacity-90 mb-xl max-w-2xl mx-auto">Join over 500+ property managers who have transformed their portfolio operations with functional elegance.</p>
+<div class="flex flex-col md:flex-row justify-center gap-md">
+<button class="px-xl py-md bg-white text-primary rounded-xl font-bold text-h3 soft-shadow transition-transform hover:scale-105">Get Started for Free</button>
+<button class="px-xl py-md border-2 border-white/30 hover:bg-white/10 rounded-xl font-bold text-h3 transition-all">Talk to Sales</button>
+</div>
+</div>
+<!-- Abstract Background circles -->
+<div class="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+<div class="absolute bottom-0 right-0 w-96 h-96 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-xl px-lg bg-surface-container-lowest dark:bg-on-background border-t border-outline-variant dark:border-outline">
+<div class="max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="flex flex-col items-center md:items-start gap-xs">
+<span class="text-h3 font-h3 text-primary dark:text-primary-fixed">TenantEase</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant">© 2024 TenantEase. All rights reserved.</p>
+</div>
+<div class="flex gap-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed underline transition-all duration-200" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed underline transition-all duration-200" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed underline transition-all duration-200" href="#">Contact Us</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary dark:hover:text-primary-fixed underline transition-all duration-200" href="#">Support</a>
+</div>
+<div class="flex gap-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="facebook">social_leaderboard</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="alternate_email">alternate_email</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="share">share</span>
+</div>
+</div>
+</footer>
+</body></html>

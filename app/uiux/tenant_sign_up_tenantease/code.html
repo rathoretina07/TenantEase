@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tenant Registration - TenantEase</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary": "#6b38d4",
+                    "tertiary-container": "#006a7c",
+                    "error": "#ba1a1a",
+                    "surface": "#f9f9ff",
+                    "primary-container": "#4f46e5",
+                    "on-primary-fixed-variant": "#3323cc",
+                    "on-secondary-container": "#fffbff",
+                    "on-primary": "#ffffff",
+                    "on-background": "#151c27",
+                    "surface-container": "#e7eefe",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed": "#e9ddff",
+                    "on-tertiary-container": "#93e8ff",
+                    "on-surface-variant": "#464555",
+                    "secondary-fixed-dim": "#d0bcff",
+                    "on-primary-container": "#dad7ff",
+                    "surface-container-low": "#f0f3ff",
+                    "primary-fixed": "#e2dfff",
+                    "outline": "#777587",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed": "#0f0069",
+                    "error-container": "#ffdad6",
+                    "surface-tint": "#4d44e3",
+                    "primary-fixed-dim": "#c3c0ff",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#f9f9ff",
+                    "inverse-on-surface": "#ebf1ff",
+                    "on-secondary-fixed": "#23005c",
+                    "tertiary-fixed-dim": "#4cd7f6",
+                    "surface-container-high": "#e2e8f8",
+                    "outline-variant": "#c7c4d8",
+                    "on-tertiary-fixed-variant": "#004e5c",
+                    "inverse-primary": "#c3c0ff",
+                    "secondary-container": "#8455ef",
+                    "surface-dim": "#d3daea",
+                    "on-surface": "#151c27",
+                    "on-secondary-fixed-variant": "#5516be",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2a313d",
+                    "background": "#f9f9ff",
+                    "tertiary-fixed": "#acedff",
+                    "tertiary": "#00505f",
+                    "surface-variant": "#dce2f3",
+                    "primary": "#3525cd",
+                    "surface-container-highest": "#dce2f3",
+                    "on-tertiary-fixed": "#001f26"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "24px",
+                    "xl": "40px",
+                    "container-max": "1280px",
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "h3": ["Inter"],
+                    "h2": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "h1": ["Inter"]
+            },
+            "fontSize": {
+                    "h3": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                    "h2": ["24px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                    "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                    "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "500" }],
+                    "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                    "h1": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background min-h-screen flex text-on-background font-body-md">
+<!-- Left Column: Form Area -->
+<div class="flex-1 flex flex-col justify-center px-lg py-xl sm:px-xl lg:flex-none lg:w-1/2 xl:w-5/12 z-10 bg-surface">
+<div class="mx-auto w-full max-w-md">
+<!-- Brand & Header -->
+<div class="mb-xl">
+<div class="flex items-center gap-sm mb-lg">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined text-body-md" style="font-variation-settings: 'FILL' 1;">domain</span>
+</div>
+<span class="font-h3 text-h3 text-primary tracking-tight">TenantEase</span>
+</div>
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps mb-md">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                    Step 1 of 3
+                </div>
+<h1 class="font-h1 text-h1 text-on-background mb-sm">Account Creation</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Enter your details to begin setting up your tenant portal.</p>
+</div>
+<!-- Registration Form -->
+<form action="#" class="space-y-lg" method="POST">
+<!-- Full Name -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs ml-1" for="fullName">Full Name</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline-variant text-body-md">person</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all" id="fullName" name="fullName" placeholder="Jane Doe" required="" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs ml-1" for="email">Email</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline-variant text-body-md">mail</span>
+</div>
+<input autocomplete="email" class="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all" id="email" name="email" placeholder="jane@example.com" required="" type="email"/>
+</div>
+</div>
+<!-- Phone Number -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs ml-1" for="phone">Phone Number</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline-variant text-body-md">call</span>
+</div>
+<input autocomplete="tel" class="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all" id="phone" name="phone" placeholder="(555) 000-0000" required="" type="tel"/>
+</div>
+</div>
+<!-- Password -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-xs ml-1" for="password">Password</label>
+<div class="relative">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-outline-variant text-body-md">lock</span>
+</div>
+<input autocomplete="new-password" class="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<!-- Terms and Conditions -->
+<div class="flex items-start">
+<div class="flex items-center h-5">
+<input class="focus:ring-primary h-4 w-4 text-primary border-outline-variant rounded bg-surface-container-low" id="terms" name="terms" required="" type="checkbox"/>
+</div>
+<div class="ml-3 text-body-sm">
+<label class="font-body-sm text-on-surface-variant" for="terms">
+                            I agree to the <a class="text-primary hover:text-secondary font-medium" href="#">Terms and Conditions</a> and <a class="text-primary hover:text-secondary font-medium" href="#">Privacy Policy</a>.
+                        </label>
+</div>
+</div>
+<!-- Submit Button -->
+<div>
+<button class="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-lg font-body-md font-semibold text-on-primary bg-gradient-to-r from-primary to-secondary shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] hover:-translate-y-0.5 transition-all duration-200 ring-1 ring-inset ring-white/20" type="submit">
+                        Create Tenant Account
+                        <span class="material-symbols-outlined text-body-sm">arrow_forward</span>
+</button>
+</div>
+</form>
+<p class="mt-lg text-center font-body-sm text-body-sm text-on-surface-variant">
+                Already have an account? <a class="font-semibold text-primary hover:text-secondary transition-colors" href="#">Log in</a>
+</p>
+</div>
+</div>
+<!-- Right Column: Testimonial Visual -->
+<div class="hidden lg:block relative w-0 flex-1 overflow-hidden">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 bg-surface-container-high">
+<img alt="" class="absolute inset-0 h-full w-full object-cover opacity-80 mix-blend-multiply" data-alt="A bright, modern luxury apartment interior bathed in soft morning sunlight. The living room features minimalist design with natural wood tones, crisp white walls, and elegant, understated furniture. The lighting is high-key and serene, reflecting a premium, comfortable living space consistent with a high-end property management aesthetic. The overall mood is peaceful, aspirational, and cleanly composed." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCypldI4iP53FHsZvQ2auld5_fzuM38XFKSb7AX4akZkqZHc49wKBCeJIYFxGA28dB_wOYTgjaMEbolB8QK6oVEHpq7O3D7hzlOyjJwUTZVGmxRv7qoVXR1zqQBjn_PdGKIxyKSA4y_dXRzgEfwbpG39kSt90qn5TQPgHoMra_uj63fGY9eIzhhlSun_frasZQn8xeej6FZrZW2Eb_4tZv0OFDjrTkxKEmRWRVqUkvm9y8NkWLNuVzj_NwFyB8d-wSKwQCzgx0hZ5U"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent"></div>
+<div class="absolute inset-0 bg-primary/5"></div>
+</div>
+<!-- Glassmorphism Testimonial Card -->
+<div class="absolute bottom-xl right-xl left-xl max-w-lg ml-auto">
+<div class="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/40 rounded-2xl p-xl shadow-2xl shadow-primary/10">
+<div class="flex items-center gap-md mb-md">
+<div class="flex text-amber-400">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="font-h3 text-h3 text-on-surface mb-lg relative z-10">
+                    "TenantEase completely transformed how I manage my lease. Paying rent and submitting maintenance requests is now incredibly smooth and transparent. It's the standard every property should use."
+                </p>
+<div class="flex items-center gap-md">
+<img alt="" class="h-12 w-12 rounded-full object-cover border-2 border-white shadow-sm" data-alt="A professional headshot of a young woman with a warm, genuine smile. She is well-lit with soft, studio-quality lighting against a neutral, light-mode background. Her demeanor is approachable and satisfied, representing a happy, reliable tenant. The visual style is clean, modern, and perfectly suited for a corporate testimonial avatar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyZfpcyCpzUJJRRYzN137CSIBetnDI8witrrmT709teaXfPiMk6btBOe4XPpl6VdddRfhSfqLRlWEo2jXd6lNtikCAfBWz3Zv38eNKt8Bs4ecNyMT9_jZOMlGYlPxM-RkJvAbC-mFtpvNu7YbeRm5e9Yn2Tea6NkPNsY01N9nT3Kj6hybaqN65s-lscxCQTLAT0PD84O9wisJnmOh5DMAQbvce5_QXzyNSj4mf7FMFbZN2XWfkGlc0KdOiLEuwM8OgEFhnXYjDPiM"/>
+<div>
+<div class="font-body-md font-semibold text-on-surface">Sarah Jenkins</div>
+<div class="font-body-sm text-on-surface-variant">Resident at The Highland</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>
