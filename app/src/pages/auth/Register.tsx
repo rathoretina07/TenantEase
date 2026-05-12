@@ -1,6 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { Button } from '../../components/ui/Button';
 
 export default function Register() {
   const navigate = useNavigate();

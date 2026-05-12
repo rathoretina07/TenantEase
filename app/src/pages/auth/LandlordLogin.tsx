@@ -1,7 +1,43 @@
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useAuthStore } from '../../store/authStore';
+import { Input } from '../../components/ui/Input';
+import { Button } from '../../components/ui/Button';
+
+const loginSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
+  remember: z.boolean().optional(),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LandlordLogin() {
   const navigate = useNavigate();
+  const { login } = useAuthStore();
+
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      remember: false,
+    }
+  });
+
+  const onSubmit = async (data: LoginFormValues) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    login({
+      id: 'mock-123',
+      email: data.email,
+      name: 'Alex Landlord',
+      role: 'manager'
+    });
+    navigate('/manager/dashboard');
+  };
 
   return (
     <div className="bg-background text-on-background min-h-screen flex font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
@@ -27,35 +63,35 @@ export default function LandlordLogin() {
             <h1 className="font-h2 text-h2 text-on-surface mb-xs">Welcome back</h1>
             <p className="font-body-sm text-body-sm text-on-surface-variant">Please enter your details to sign in.</p>
           </div>
-          <form className="flex flex-col gap-lg" onSubmit={(e) => { e.preventDefault(); navigate('/manager/dashboard'); }}>
+          <form className="flex flex-col gap-lg" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-xs">
               <label className="font-label-caps text-label-caps text-on-surface-variant uppercase" htmlFor="email">Email address</label>
               <div className="relative">
-                <span className="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">mail</span>
-                <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-md pl-[48px] pr-md font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow shadow-sm outline-none" id="email" placeholder="manager@teanantease.com" type="email" required />
+                <span className="absolute left-md top-[22px] -translate-y-1/2 material-symbols-outlined text-outline z-10">mail</span>
+                <Input className="pl-[48px]" id="email" placeholder="manager@tenantease.com" type="email" error={errors.email?.message} {...register('email')} />
               </div>
             </div>
             <div className="flex flex-col gap-xs">
               <label className="font-label-caps text-label-caps text-on-surface-variant uppercase" htmlFor="password">Password</label>
               <div className="relative">
-                <span className="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline">lock</span>
-                <input className="w-full bg-surface-container-lowest border border-outline-variant rounded-lg py-md pl-[48px] pr-md font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-shadow shadow-sm outline-none" id="password" placeholder="••••••••" type="password" required />
+                <span className="absolute left-md top-[22px] -translate-y-1/2 material-symbols-outlined text-outline z-10">lock</span>
+                <Input className="pl-[48px]" id="password" placeholder="••••••••" type="password" error={errors.password?.message} {...register('password')} />
               </div>
             </div>
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-sm cursor-pointer group">
                 <div className="relative flex items-center justify-center w-5 h-5">
-                  <input className="peer appearance-none w-5 h-5 border-2 border-outline rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface" type="checkbox" />
+                  <input className="peer appearance-none w-5 h-5 border-2 border-outline rounded-[4px] checked:bg-primary checked:border-primary transition-colors cursor-pointer focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-surface" type="checkbox" {...register('remember')} />
                   <span className="material-symbols-outlined absolute text-[16px] text-on-primary opacity-0 peer-checked:opacity-100 pointer-events-none transition-opacity" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
                 </div>
                 <span className="font-body-sm text-body-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Remember for 30 days</span>
               </label>
               <a className="font-body-sm text-body-sm text-primary hover:text-primary-container font-semibold transition-colors" href="#">Forgot password?</a>
             </div>
-            <button className="w-full bg-primary hover:bg-primary-container text-on-primary font-body-md text-body-md py-md rounded-lg shadow-sm transition-all active:scale-[0.98] flex items-center justify-center gap-sm" type="submit">
+            <Button className="w-full justify-center gap-sm h-12" type="submit" isLoading={isSubmitting}>
               Sign in
-              <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
-            </button>
+              {!isSubmitting && <span className="material-symbols-outlined text-[20px]">arrow_forward</span>}
+            </Button>
           </form>
           <div className="mt-lg relative flex items-center">
             <div className="flex-grow border-t border-outline-variant"></div>

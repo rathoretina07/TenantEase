@@ -1,4 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Sidebar } from './Sidebar';
 
 interface DashboardLayoutProps {
@@ -26,16 +27,20 @@ export function DashboardLayout({ type, profileImg }: DashboardLayoutProps) {
   ];
 
   const items = type === 'manager' ? managerItems : tenantItems;
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="bg-background text-on-background font-body-sm h-screen w-full overflow-hidden flex selection:bg-primary-container selection:text-on-primary-container">
-      <Sidebar items={items} type={type} />
+      <Sidebar items={items} type={type} isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
       
       <main className="flex-1 flex flex-col h-full relative md:ml-64 w-full">
         {/* TopNavBar */}
-        <header className="sticky top-0 z-40 flex justify-between items-center px-6 py-3 w-full border-b border-white/20 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md shadow-sm">
+        <header className="sticky top-0 z-40 flex justify-between items-center px-6 py-3 w-full border-b border-surface-container-highest bg-white/70 dark:bg-slate-900/70 backdrop-blur-md shadow-sm transition-colors">
           {/* Mobile Menu Trigger */}
-          <button className="md:hidden p-2 -ml-2 text-on-surface rounded-lg hover:bg-surface-container active:scale-95 duration-200">
+          <button 
+            className="md:hidden p-2 -ml-2 text-on-surface rounded-lg hover:bg-surface-container active:scale-95 duration-200"
+            onClick={() => setIsMobileMenuOpen(true)}
+          >
             <span className="material-symbols-outlined">menu</span>
           </button>
           

@@ -1,28 +1,38 @@
+import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Welcome from './pages/auth/Welcome';
-import Landing from './pages/Landing';
-import RoleSelection from './pages/auth/RoleSelection';
-import RegisterChoice from './pages/auth/RegisterChoice';
-import Register from './pages/auth/Register';
-import LandlordLogin from './pages/auth/LandlordLogin';
-import TenantLogin from './pages/auth/TenantLogin';
-import LandlordRegister from './pages/auth/LandlordRegister';
-import TenantRegister from './pages/auth/TenantRegister';
-import JoinProperty from './pages/auth/JoinProperty';
-import IdentityVerification from './pages/auth/IdentityVerification';
 import { DashboardLayout } from './components/layout/DashboardLayout';
-import TenantDashboard from './pages/tenant/Dashboard';
-import ManagerDashboard from './pages/manager/Dashboard';
-import Properties from './pages/manager/Properties';
-import Analytics from './pages/manager/Analytics';
-import TenantPayments from './pages/tenant/Payments';
-import TenantProfile from './pages/tenant/Profile';
+import { ProtectedRoute } from './components/layout/ProtectedRoute';
+import { PageLoader } from './components/ui/Loader';
+
+// Lazy loaded pages
+const Welcome = React.lazy(() => import('./pages/auth/Welcome'));
+const Landing = React.lazy(() => import('./pages/Landing'));
+const RoleSelection = React.lazy(() => import('./pages/auth/RoleSelection'));
+const RegisterChoice = React.lazy(() => import('./pages/auth/RegisterChoice'));
+const Register = React.lazy(() => import('./pages/auth/Register'));
+const LandlordLogin = React.lazy(() => import('./pages/auth/LandlordLogin'));
+const TenantLogin = React.lazy(() => import('./pages/auth/TenantLogin'));
+const LandlordRegister = React.lazy(() => import('./pages/auth/LandlordRegister'));
+const TenantRegister = React.lazy(() => import('./pages/auth/TenantRegister'));
+const JoinProperty = React.lazy(() => import('./pages/auth/JoinProperty'));
+const IdentityVerification = React.lazy(() => import('./pages/auth/IdentityVerification'));
+
+const TenantDashboard = React.lazy(() => import('./pages/tenant/Dashboard'));
+const ManagerDashboard = React.lazy(() => import('./pages/manager/Dashboard'));
+const Properties = React.lazy(() => import('./pages/manager/Properties'));
+const ManagerTenants = React.lazy(() => import('./pages/manager/Tenants'));
+const ManagerPayments = React.lazy(() => import('./pages/manager/Payments'));
+const Analytics = React.lazy(() => import('./pages/manager/Analytics'));
+const TenantPayments = React.lazy(() => import('./pages/tenant/Payments'));
+const TenantProfile = React.lazy(() => import('./pages/tenant/Profile'));
+const Messages = React.lazy(() => import('./pages/shared/Messages'));
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Landing />} />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          <Route path="/" element={<Landing />} />
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/auth-choice" element={<RoleSelection />} />
         <Route path="/register-choice" element={<RegisterChoice />} />
@@ -38,25 +48,30 @@ function App() {
         <Route path="/register" element={<Register />} />
         
         {/* Manager Routes */}
-        <Route path="/manager" element={<DashboardLayout type="manager" userName="Alex" />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<ManagerDashboard />} />
-          <Route path="properties" element={<Properties />} />
-          <Route path="tenants" element={<div>Tenants (Work in Progress)</div>} />
-          <Route path="payments" element={<div>Payments (Work in Progress)</div>} />
-          <Route path="analytics" element={<Analytics />} />
-          <Route path="messages" element={<div>Messages (Work in Progress)</div>} />
+        <Route element={<ProtectedRoute allowedRoles={['manager']} />}>
+          <Route path="/manager" element={<DashboardLayout type="manager" userName="Alex" />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<ManagerDashboard />} />
+            <Route path="properties" element={<Properties />} />
+            <Route path="tenants" element={<ManagerTenants />} />
+            <Route path="payments" element={<ManagerPayments />} />
+            <Route path="analytics" element={<Analytics />} />
+            <Route path="messages" element={<Messages />} />
+          </Route>
         </Route>
         
         {/* Tenant Routes */}
-        <Route path="/tenant" element={<DashboardLayout type="tenant" userName="Sarah" />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<TenantDashboard />} />
-          <Route path="payments" element={<TenantPayments />} />
-          <Route path="messages" element={<div>Messages (Work in Progress)</div>} />
-          <Route path="profile" element={<TenantProfile />} />
+        <Route element={<ProtectedRoute allowedRoles={['tenant']} />}>
+          <Route path="/tenant" element={<DashboardLayout type="tenant" userName="Sarah" />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<TenantDashboard />} />
+            <Route path="payments" element={<TenantPayments />} />
+            <Route path="messages" element={<Messages />} />
+            <Route path="profile" element={<TenantProfile />} />
+          </Route>
         </Route>
-      </Routes>
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

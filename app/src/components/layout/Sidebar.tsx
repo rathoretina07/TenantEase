@@ -1,5 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { cn } from '../../lib/utils';
+import { useAuthStore } from '../../store/authStore';
 
 interface SidebarItem {
   icon: string;
@@ -10,24 +12,54 @@ interface SidebarItem {
 interface SidebarProps {
   items: SidebarItem[];
   type: 'manager' | 'tenant';
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export function Sidebar({ items, type }: SidebarProps) {
+export function Sidebar({ items, type, isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
+  const { logout } = useAuthStore();
+  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
+
+  const toggleDarkMode = () => {
+    if (isDark) {
+      document.documentElement.classList.remove('dark');
+      setIsDark(false);
+    } else {
+      document.documentElement.classList.add('dark');
+      setIsDark(true);
+    }
+  };
 
   return (
-    <aside className="fixed left-0 top-0 h-full flex-col p-4 w-64 border-r border-white/10 bg-slate-50/50 dark:bg-slate-950/50 backdrop-blur-xl shadow-xl hidden md:flex z-50">
+    <>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm"
+          onClick={onClose}
+        />
+      )}
+      <aside className={cn(
+        "fixed left-0 top-0 h-full flex-col p-4 w-64 border-r border-white/10 bg-slate-50/50 dark:bg-slate-950/50 backdrop-blur-xl shadow-xl z-50 transition-transform duration-300",
+        isOpen ? "translate-x-0 flex" : "-translate-x-full md:translate-x-0 md:flex hidden"
+      )}>
       {/* Header */}
-      <div className="flex items-center gap-sm px-4 py-md mb-lg cursor-pointer" onClick={() => navigate('/')}>
-        <div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shrink-0">
-          <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>real_estate_agent</span>
+      <div className="flex items-center justify-between px-4 py-md mb-lg">
+        <div className="flex items-center gap-sm cursor-pointer" onClick={() => navigate('/')}>
+          <div className="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container shrink-0">
+            <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>real_estate_agent</span>
+          </div>
+          <div className="flex flex-col">
+            <span className="font-h3 text-h3 text-indigo-600 dark:text-indigo-400 font-black tracking-tight leading-none">TenantEase</span>
+            <span className="font-label-caps text-label-caps text-outline mt-xs">
+              {type === 'manager' ? 'Landlord Pro' : 'Tenant Portal'}
+            </span>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <span className="font-h3 text-h3 text-indigo-600 dark:text-indigo-400 font-black tracking-tight leading-none">TenantEase</span>
-          <span className="font-label-caps text-label-caps text-outline mt-xs">
-            {type === 'manager' ? 'Landlord Pro' : 'Tenant Portal'}
-          </span>
-        </div>
+        <button onClick={onClose} className="md:hidden p-1 text-on-surface-variant hover:bg-surface-container rounded-md">
+          <span className="material-symbols-outlined">close</span>
+        </button>
       </div>
 
       {/* Main Nav */}
@@ -73,8 +105,20 @@ export function Sidebar({ items, type }: SidebarProps) {
             <span className="font-body-sm text-body-sm">Help Center</span>
           </a>
           <button 
+            className="flex items-center justify-between w-full text-slate-500 dark:text-slate-400 py-2 px-4 hover:translate-x-1 transition-transform group rounded-xl hover:bg-surface-container-low"
+            onClick={toggleDarkMode}
+          >
+            <div className="flex items-center gap-sm">
+              <span className="material-symbols-outlined text-[20px]">{isDark ? 'light_mode' : 'dark_mode'}</span>
+              <span className="font-body-sm text-body-sm">{isDark ? 'Light Mode' : 'Dark Mode'}</span>
+            </div>
+          </button>
+          <button 
             className="flex items-center gap-sm text-slate-500 dark:text-slate-400 py-2 px-4 hover:translate-x-1 transition-transform group rounded-xl hover:bg-error-container hover:text-error transition-colors"
-            onClick={() => navigate('/')}
+            onClick={() => {
+              logout();
+              navigate('/');
+            }}
           >
             <span className="material-symbols-outlined text-[20px]">logout</span>
             <span className="font-body-sm text-body-sm">Logout</span>
@@ -82,5 +126,6 @@ export function Sidebar({ items, type }: SidebarProps) {
         </div>
       </div>
     </aside>
+    </>
   );
 }

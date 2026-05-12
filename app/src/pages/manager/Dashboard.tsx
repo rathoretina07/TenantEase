@@ -120,17 +120,15 @@ export default function ManagerDashboard() {
               <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
             </div>
             <div className="absolute inset-0 left-12 bottom-6 z-0">
-              <svg height="100%" preserveaspectratio="none" viewbox="0 0 100 100" width="100%">
+              <svg preserveAspectRatio="none" viewBox="0 0 300 100" width="100%" height="100%">
                 <defs>
-                  <lineargradient id="lineGrad" x1="0%" x2="0%" y1="0%" y2="100%">
-                    <stop offset="0%" stop-color="#4f46e5" stop-opacity="0.2"></stop>
-                    <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"></stop>
-                  </lineargradient>
+                  <linearGradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.2"/>
+                    <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0"/>
+                  </linearGradient>
                 </defs>
-                <path d="M0,80 C20,70 30,90 50,40 C70,-10 80,30 100,10 L100,100 L0,100 Z" fill="url(#lineGrad)"></path>
-                <path className="drop-shadow-md" d="M0,80 C20,70 30,90 50,40 C70,-10 80,30 100,10" fill="none" stroke="#4f46e5" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
-                <circle cx="50" cy="40" fill="#ffffff" r="3" stroke="#4f46e5" stroke-width="2"></circle>
-                <circle cx="100" cy="10" fill="#ffffff" r="3" stroke="#4f46e5" stroke-width="2"></circle>
+                <path d="M0 80 Q 50 20 100 60 T 200 40 T 300 20 L 300 100 L 0 100 Z" fill="url(#chartGradient)"/>
+                <path d="M0 80 Q 50 20 100 60 T 200 40 T 300 20" fill="none" stroke="var(--color-primary)" strokeWidth="3"/>
               </svg>
             </div>
           </div>
@@ -142,7 +140,7 @@ export default function ManagerDashboard() {
             <h3 className="font-h3 text-h3 text-on-surface mb-md">Portfolio Distribution</h3>
             <div className="flex-1 flex flex-col items-center justify-center relative">
               <div className="relative w-40 h-40">
-                <svg className="w-full h-full transform -rotate-90" viewbox="0 0 36 36">
+                <svg className="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                   <path className="text-surface-variant" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="4"></path>
                   <path className="text-primary-container" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="60, 100" stroke-width="4"></path>
                   <path className="text-tertiary-fixed-dim" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="25, 100" stroke-dashoffset="-60" stroke-width="4"></path>

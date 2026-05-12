@@ -1,4 +1,41 @@
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { toast } from 'react-hot-toast';
+import { Input } from '../../components/ui/Input';
+import { Button } from '../../components/ui/Button';
+
+const profileSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  phone: z.string().min(10, 'Phone number must be at least 10 digits'),
+  emergencyContactName: z.string().min(2, 'Name is too short'),
+  emergencyContactPhone: z.string().min(10, 'Phone number must be at least 10 digits'),
+});
+
+type ProfileFormValues = z.infer<typeof profileSchema>;
+
 export default function TenantProfile() {
+  const [isEditing, setIsEditing] = useState(false);
+  const [profileData, setProfileData] = useState<ProfileFormValues>({
+    email: 'sarah.j.design@example.com',
+    phone: '(555) 123-4567',
+    emergencyContactName: 'Michael Jenkins',
+    emergencyContactPhone: '(555) 987-6543',
+  });
+
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ProfileFormValues>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: profileData,
+  });
+
+  const onSubmit = async (data: ProfileFormValues) => {
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    setProfileData(data);
+    setIsEditing(false);
+    toast.success('Profile updated successfully!');
+  };
   return (
     <div className="max-w-container-max mx-auto w-full space-y-xl pb-xl">
       {/* Page Header / Profile Quick Look */}
@@ -20,8 +57,11 @@ export default function TenantProfile() {
           <button className="flex-1 sm:flex-none px-lg py-2 rounded-lg bg-surface border border-outline-variant text-on-surface font-body-md text-body-md font-medium hover:bg-surface-variant transition-colors flex items-center justify-center gap-sm">
             <span className="material-symbols-outlined text-lg">mail</span> Message
           </button>
-          <button className="flex-1 sm:flex-none px-lg py-2 rounded-lg bg-primary-container text-on-primary font-body-md text-body-md font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-sm">
-            <span className="material-symbols-outlined text-lg">edit</span> Edit Profile
+          <button 
+            onClick={() => setIsEditing(!isEditing)}
+            className="flex-1 sm:flex-none px-lg py-2 rounded-lg bg-primary-container text-on-primary font-body-md text-body-md font-medium hover:opacity-90 transition-opacity flex items-center justify-center gap-sm"
+          >
+            <span className="material-symbols-outlined text-lg">{isEditing ? 'close' : 'edit'}</span> {isEditing ? 'Cancel Edit' : 'Edit Profile'}
           </button>
         </div>
       </div>
@@ -33,26 +73,48 @@ export default function TenantProfile() {
           <h2 className="font-h3 text-h3 text-on-surface flex items-center gap-sm">
             <span className="material-symbols-outlined text-primary">person</span> Personal Details
           </h2>
-          <div className="space-y-md">
-            <div>
-              <div className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1">Email Address</div>
-              <div className="font-body-md text-body-md text-on-surface flex items-center gap-sm">
-                sarah.j.design@example.com
-                <span className="material-symbols-outlined text-primary cursor-pointer text-sm hover:opacity-70">content_copy</span>
+          {isEditing ? (
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                <label className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1 block">Email Address</label>
+                <Input {...register('email')} error={errors.email?.message} />
+              </div>
+              <div>
+                <label className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1 block">Phone Number</label>
+                <Input {...register('phone')} error={errors.phone?.message} />
+              </div>
+              <div className="pt-2 border-t border-outline-variant/20">
+                <label className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1 block">Emergency Contact Name</label>
+                <Input {...register('emergencyContactName')} error={errors.emergencyContactName?.message} />
+              </div>
+              <div>
+                <label className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1 block">Emergency Contact Phone</label>
+                <Input {...register('emergencyContactPhone')} error={errors.emergencyContactPhone?.message} />
+              </div>
+              <Button type="submit" isLoading={isSubmitting} className="w-full">Save Changes</Button>
+            </form>
+          ) : (
+            <div className="space-y-md">
+              <div>
+                <div className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1">Email Address</div>
+                <div className="font-body-md text-body-md text-on-surface flex items-center gap-sm">
+                  {profileData.email}
+                  <span className="material-symbols-outlined text-primary cursor-pointer text-sm hover:opacity-70">content_copy</span>
+                </div>
+              </div>
+              <div className="h-px w-full bg-outline-variant/20"></div>
+              <div>
+                <div className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1">Phone Number</div>
+                <div className="font-body-md text-body-md text-on-surface">{profileData.phone}</div>
+              </div>
+              <div className="h-px w-full bg-outline-variant/20"></div>
+              <div>
+                <div className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1">Emergency Contact</div>
+                <div className="font-body-md text-body-md text-on-surface">{profileData.emergencyContactName}</div>
+                <div className="font-body-sm text-body-sm text-on-surface-variant">{profileData.emergencyContactPhone}</div>
               </div>
             </div>
-            <div className="h-px w-full bg-outline-variant/20"></div>
-            <div>
-              <div className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1">Phone Number</div>
-              <div className="font-body-md text-body-md text-on-surface">(555) 123-4567</div>
-            </div>
-            <div className="h-px w-full bg-outline-variant/20"></div>
-            <div>
-              <div className="font-label-caps text-label-caps text-outline uppercase tracking-wider mb-1">Emergency Contact</div>
-              <div className="font-body-md text-body-md text-on-surface">Michael Jenkins (Brother)</div>
-              <div className="font-body-sm text-body-sm text-on-surface-variant">(555) 987-6543</div>
-            </div>
-          </div>
+          )}
         </div>
 
         {/* Lease Details & Stats */}
