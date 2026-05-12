@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Building2, Info, MapPin, CircleDollarSign, Image, Upload, Trash2, Plus, ArrowRight } from 'lucide-react';
+import { Building2, Info, MapPin, IndianRupee, Image, Upload, Trash2, Plus, ArrowRight } from 'lucide-react';
 import { Button } from '../../components/ui/Button';
 
 export default function JoinProperty() {
@@ -102,7 +102,7 @@ export default function JoinProperty() {
               {/* Section 2: Financials & Units */}
               <section className="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <CircleDollarSign className="text-primary-container" size={24} />
+                  <IndianRupee className="text-primary-container" size={24} />
                   <h2 className="text-2xl font-bold text-on-surface">Configuration & Finance</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -118,7 +118,7 @@ export default function JoinProperty() {
                   <div className="space-y-2">
                     <label className="text-xs font-semibold tracking-wider text-on-surface-variant uppercase">RENT PER UNIT</label>
                     <div className="relative">
-                      <span className="absolute left-4 top-4 text-slate-500 font-bold">$</span>
+                      <span className="absolute left-4 top-4 text-slate-500 font-bold">₹</span>
                       <input 
                         className="w-full bg-slate-50 border-none rounded-lg pl-8 p-4 text-base focus:ring-2 focus:ring-primary outline-none" 
                         placeholder="0.00" 

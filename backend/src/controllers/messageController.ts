@@ -1,6 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { prisma } from '../lib/prisma';
 import { AuthRequest } from '../middleware/authMiddleware';
+import { eventBus, AppEvent } from '../lib/eventEmitter';
 
 // GET /api/messages - get all messages for the current user
 export const getMessages = async (req: AuthRequest, res: Response, next: NextFunction) => {
@@ -27,10 +28,22 @@ export const getMessages = async (req: AuthRequest, res: Response, next: NextFun
 // POST /api/messages - send a new message
 export const sendMessage = async (req: AuthRequest, res: Response, next: NextFunction) => {
   try {
-    const { receiverId, content } = req.body;
+    let { receiverId, content } = req.body;
     if (!receiverId || !content) {
       return res.status(400).json({ error: 'receiverId and content are required' });
     }
+
+    // Support looking up user by email if receiverId looks like an email
+    if (receiverId.includes('@')) {
+      const targetUser = await prisma.user.findUnique({
+        where: { email: receiverId }
+      });
+      if (!targetUser) {
+        return res.status(404).json({ error: `User with email ${receiverId} not found` });
+      }
+      receiverId = targetUser.id;
+    }
+
     const message = await prisma.message.create({
       data: {
         senderId: req.user!.id,
@@ -42,6 +55,15 @@ export const sendMessage = async (req: AuthRequest, res: Response, next: NextFun
         receiver: { include: { profile: true } }
       }
     });
+
+    // ── Emit real-time event ──────────────────────────────────────────────
+    eventBus.dispatch({
+      event: AppEvent.MESSAGE_SENT,
+      targetUserIds: [receiverId],
+      data: { message },
+      timestamp: new Date(),
+    });
+
     res.status(201).json(message);
   } catch (error) {
     next(error);

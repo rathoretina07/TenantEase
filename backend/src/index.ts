@@ -1,11 +1,14 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { createServer } from 'http';
+import { initSocketServer } from './lib/socket';
 
 // Load environment variables
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
 const port = process.env.PORT || 3000;
 
 // Middleware
@@ -43,8 +46,12 @@ app.use('/api/analytics', analyticsRoutes);
 import { errorHandler } from './middleware/errorHandler';
 app.use(errorHandler);
 
-// Start Server
-app.listen(port, () => {
+// ─── Initialise Socket.io ─────────────────────────────────────────────────
+initSocketServer(httpServer);
+
+// ─── Start Server (use httpServer, not app.listen) ────────────────────────
+httpServer.listen(port, () => {
   console.log(`🚀 TenantEase API running on port ${port}`);
+  console.log(`🔌 Socket.io WebSocket server attached`);
   console.log(`📊 Routes: /api/auth | /api/properties | /api/payments | /api/tenants | /api/messages | /api/analytics`);
 });

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { api } from '../services/api';
+import { connectSocket, disconnectSocket } from '../services/socket';
 
 interface User {
   id: string;
@@ -50,6 +51,8 @@ export const useAuthStore = create<AuthState>((set) => ({
       try {
         const user = JSON.parse(userRaw);
         set({ user, token, isAuthenticated: true });
+        // Re-establish socket connection on page refresh
+        connectSocket(token);
       } catch {
         localStorage.removeItem('tenant_ease_token');
         localStorage.removeItem('tenant_ease_user');
@@ -75,6 +78,9 @@ export const useAuthStore = create<AuthState>((set) => ({
 
       localStorage.setItem('tenant_ease_token', token);
       localStorage.setItem('tenant_ease_user', JSON.stringify(user));
+
+      // Connect Socket.io with the new token
+      connectSocket(token);
 
       set({ user, token, isAuthenticated: true, isLoading: false });
     } catch (err: any) {
@@ -102,6 +108,9 @@ export const useAuthStore = create<AuthState>((set) => ({
       localStorage.setItem('tenant_ease_token', token);
       localStorage.setItem('tenant_ease_user', JSON.stringify(user));
 
+      // Connect Socket.io with the new token
+      connectSocket(token);
+
       set({ user, token, isAuthenticated: true, isLoading: false });
     } catch (err: any) {
       const msg = err.response?.data?.error || 'Registration failed. Please try again.';
@@ -113,6 +122,8 @@ export const useAuthStore = create<AuthState>((set) => ({
   logout: () => {
     localStorage.removeItem('tenant_ease_token');
     localStorage.removeItem('tenant_ease_user');
+    // Disconnect Socket.io
+    disconnectSocket();
     set({ user: null, token: null, isAuthenticated: false });
   },
 

@@ -91,14 +91,14 @@ export default function Messages() {
           {error && <div className="p-sm rounded-lg bg-error-container text-on-error-container text-sm">{error}</div>}
           <form onSubmit={handleSend} className="flex flex-col gap-md">
             <div>
-              <label className="block font-body-sm text-body-sm text-on-surface mb-xs">Recipient User ID</label>
+              <label className="block font-body-sm text-body-sm text-on-surface mb-xs">Recipient Email or User ID</label>
               <input
                 className="w-full px-md py-sm rounded-lg bg-surface-container-low border border-outline-variant focus:border-primary outline-none font-body-sm text-body-sm"
-                placeholder="Paste user ID here"
+                placeholder="e.g. tenant@example.com or user UUID"
                 value={receiverId}
                 onChange={e => setReceiverId(e.target.value)}
               />
-              <p className="text-xs text-outline mt-1">You can find user IDs in the Tenants section.</p>
+              <p className="text-xs text-outline mt-1">Enter the recipient's email address or User ID from the Tenants section.</p>
             </div>
             <div>
               <label className="block font-body-sm text-body-sm text-on-surface mb-xs">Message</label>

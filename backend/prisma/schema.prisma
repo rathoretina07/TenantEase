@@ -1,4 +1,5 @@
-// This is your Prisma schema file configured for SQLite
+// This is your Prisma schema file
+// Supports both PostgreSQL (production) and SQLite (local dev fallback)
 
 generator client {
   provider = "prisma-client-js"
