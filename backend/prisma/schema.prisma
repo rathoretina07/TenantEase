@@ -1,0 +1,227 @@
+// This is your Prisma schema file configured for SQLite
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// -----------------------------------------------------------------------------
+// AUTH & USERS
+// -----------------------------------------------------------------------------
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  passwordHash  String
+  role          String    @default("TENANT") // MANAGER, TENANT, ADMIN
+  isVerified    Boolean   @default(false)
+  
+  // Soft delete & timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  // Relationships
+  profile       Profile?
+  sessions      Session[]
+  refreshTokens RefreshToken[]
+  
+  // Manager specific
+  properties    Property[] @relation("ManagerProperties")
+  
+  // Tenant specific
+  leases        Lease[]    @relation("TenantLeases")
+  payments      Payment[]  @relation("TenantPayments")
+  
+  // Shared
+  sentMessages  Message[]  @relation("SentMessages")
+  recvMessages  Message[]  @relation("ReceivedMessages")
+  notifications Notification[]
+  auditLogs     AuditLog[]
+}
+
+model Profile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  firstName   String
+  lastName    String
+  phone       String?
+  avatarUrl   String?
+  
+  // Stores JSON stringified preferences
+  preferences String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  sessionToken String   @unique
+  expiresAt    DateTime
+  ipAddress    String?
+  userAgent    String?
+  
+  createdAt    DateTime @default(now())
+}
+
+model RefreshToken {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  token       String   @unique
+  expiresAt   DateTime
+  revokedAt   DateTime?
+  
+  createdAt   DateTime @default(now())
+}
+
+model VerificationToken {
+  id         String   @id @default(uuid())
+  identifier String   // email
+  token      String   @unique
+  expiresAt  DateTime
+  
+  @@unique([identifier, token])
+}
+
+// -----------------------------------------------------------------------------
+// PROPERTY MANAGEMENT
+// -----------------------------------------------------------------------------
+
+model Property {
+  id          String         @id @default(uuid())
+  managerId   String
+  manager     User           @relation("ManagerProperties", fields: [managerId], references: [id], onDelete: Restrict)
+  
+  name        String
+  address     String
+  city        String
+  state       String
+  zipCode     String
+  country     String         @default("USA")
+  status      String         @default("ACTIVE") // ACTIVE, INACTIVE, MAINTENANCE
+  
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  deletedAt   DateTime?
+  
+  units       Unit[]
+}
+
+model Unit {
+  id          String     @id @default(uuid())
+  propertyId  String
+  property    Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  unitNumber  String
+  bedrooms    Int        @default(1)
+  bathrooms   Float      @default(1.0)
+  rentAmount  Float
+  status      String     @default("VACANT") // VACANT, OCCUPIED, MAINTENANCE
+  
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  deletedAt   DateTime?
+  
+  leases      Lease[]
+}
+
+// -----------------------------------------------------------------------------
+// LEASING & PAYMENTS
+// -----------------------------------------------------------------------------
+
+model Lease {
+  id            String      @id @default(uuid())
+  unitId        String
+  unit          Unit        @relation(fields: [unitId], references: [id], onDelete: Restrict)
+  tenantId      String
+  tenant        User        @relation("TenantLeases", fields: [tenantId], references: [id], onDelete: Restrict)
+  
+  startDate     DateTime
+  endDate       DateTime
+  rentAmount    Float
+  depositAmount Float
+  status        String      @default("PENDING") // PENDING, ACTIVE, EXPIRED, TERMINATED
+  documentUrl   String?
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  deletedAt     DateTime?
+  
+  payments      Payment[]
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  leaseId       String
+  lease         Lease         @relation(fields: [leaseId], references: [id], onDelete: Restrict)
+  tenantId      String
+  tenant        User          @relation("TenantPayments", fields: [tenantId], references: [id], onDelete: Restrict)
+  
+  amount        Float
+  status        String        @default("PENDING") // PENDING, COMPLETED, OVERDUE, FAILED, REFUNDED
+  dueDate       DateTime
+  paidDate      DateTime?
+  paymentMethod String?       // e.g., 'STRIPE', 'BANK_TRANSFER'
+  referenceId   String?       // External gateway reference
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+// -----------------------------------------------------------------------------
+// COMMUNICATION & LOGGING
+// -----------------------------------------------------------------------------
+
+model Message {
+  id          String   @id @default(uuid())
+  senderId    String
+  sender      User     @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId  String
+  receiver    User     @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  content     String
+  readAt      DateTime?
+  
+  createdAt   DateTime @default(now())
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type        String   // e.g., 'PAYMENT_DUE', 'NEW_MESSAGE'
+  title       String
+  content     String
+  readAt      DateTime?
+  linkUrl     String?
+  
+  createdAt   DateTime @default(now())
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  action      String   // e.g., 'LOGIN_SUCCESS', 'CREATED_PROPERTY', 'PAYMENT_FAILED'
+  entityType  String?  // e.g., 'Property', 'Payment'
+  entityId    String?  
+  metadata    String?  // JSON stringified
+  ipAddress   String?
+  userAgent   String?
+  
+  createdAt   DateTime @default(now())
+}
