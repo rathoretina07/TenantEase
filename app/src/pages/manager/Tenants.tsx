@@ -1,135 +1,100 @@
-import { useState, useEffect } from 'react';
-import { Search, Plus, Filter, MoreVertical, Mail, Phone } from 'lucide-react';
-import { Button } from '../../components/ui/Button';
-import { Input } from '../../components/ui/Input';
-import { Card } from '../../components/ui/Card';
-import { Badge } from '../../components/ui/Badge';
-import { PageLoader } from '../../components/ui/Loader';
-import { EmptyState } from '../../components/ui/EmptyState';
+import { useEffect, useState } from 'react';
+import { api } from '../../services/api';
 
-// Mock Data
-const mockTenants = [
-  { id: '1', name: 'John Doe', email: 'john@example.com', phone: '+1 234-567-8901', property: 'Sunset Apartments, 4B', status: 'Active', rent: '$1,200', joined: '2023-01-15' },
-  { id: '2', name: 'Jane Smith', email: 'jane@example.com', phone: '+1 987-654-3210', property: 'Oceanview Condos, 12A', status: 'Pending', rent: '$2,500', joined: '2023-11-01' },
-  { id: '3', name: 'Robert Johnson', email: 'robert@example.com', phone: '+1 555-123-4567', property: 'Sunset Apartments, 2A', status: 'Active', rent: '$1,100', joined: '2022-05-20' },
-  { id: '4', name: 'Emily Davis', email: 'emily@example.com', phone: '+1 444-987-6543', property: 'Maple Street House', status: 'Past Due', rent: '$3,000', joined: '2021-08-10' },
-];
+interface Tenant {
+  id: string;
+  email: string;
+  role: string;
+  profile: { firstName: string; lastName: string; phone?: string; avatarUrl?: string };
+  leases: { id: string; status: string; rentAmount: number; unit: { unitNumber: string; property: { name: string } } }[];
+}
 
-export default function Tenants() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+export default function ManagerTenants() {
+  const [tenants, setTenants] = useState<Tenant[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
-    // Simulate API fetch
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
+    api.get('/tenants')
+      .then(r => setTenants(r.data))
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
-  const filteredTenants = mockTenants.filter(t => 
-    t.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
-    t.property.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  if (isLoading) return <PageLoader />;
+  const filtered = tenants.filter(t => {
+    const name = `${t.profile?.firstName} ${t.profile?.lastName}`.toLowerCase();
+    return name.includes(search.toLowerCase()) || t.email.toLowerCase().includes(search.toLowerCase());
+  });
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="max-w-container-max mx-auto w-full">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-h2 font-h2 text-on-surface">Tenants</h1>
-          <p className="text-body-sm text-on-surface-variant">Manage your property residents and their lease details.</p>
+          <h1 className="font-h1 text-h1 text-on-surface mb-1">Tenants</h1>
+          <p className="font-body-sm text-body-sm text-on-surface-variant">Manage all tenants across your properties.</p>
         </div>
-        <Button className="w-full sm:w-auto shrink-0">
-          <Plus className="w-5 h-5 mr-2" />
-          Add Tenant
-        </Button>
+        <div className="relative">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+          <input
+            className="pl-10 pr-4 py-sm rounded-lg bg-surface-container border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary outline-none font-body-sm text-body-sm"
+            placeholder="Search tenants…"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
-      <Card className="p-0 overflow-hidden">
-        <div className="p-4 border-b border-surface-container-highest flex flex-col sm:flex-row gap-4 items-center justify-between bg-surface-container-lowest">
-          <div className="relative w-full sm:max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-outline" />
-            <Input 
-              placeholder="Search tenants or properties..." 
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-          <Button variant="outline" className="w-full sm:w-auto shrink-0">
-            <Filter className="w-4 h-4 mr-2" />
-            Filters
-          </Button>
+      {loading ? (
+        <div className="flex items-center justify-center py-xl">
+          <span className="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
         </div>
-
-        {filteredTenants.length === 0 ? (
-          <EmptyState 
-            icon={Search} 
-            title="No tenants found" 
-            description="We couldn't find any tenants matching your search query." 
-          />
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="border-b border-surface-container-highest bg-surface-container-low/50">
-                  <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Tenant</th>
-                  <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Contact</th>
-                  <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Property & Rent</th>
-                  <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Status</th>
-                  <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-surface-container-highest">
-                {filteredTenants.map((tenant) => (
-                  <tr key={tenant.id} className="hover:bg-surface-container-low/30 transition-colors">
-                    <td className="p-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-lg shrink-0">
-                          {tenant.name.charAt(0)}
-                        </div>
-                        <div>
-                          <p className="font-semibold text-on-surface">{tenant.name}</p>
-                          <p className="text-body-sm text-on-surface-variant">Joined {tenant.joined}</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2 text-body-sm text-on-surface-variant">
-                          <Mail className="w-4 h-4" /> {tenant.email}
-                        </div>
-                        <div className="flex items-center gap-2 text-body-sm text-on-surface-variant">
-                          <Phone className="w-4 h-4" /> {tenant.phone}
-                        </div>
-                      </div>
-                    </td>
-                    <td className="p-4">
-                      <p className="font-medium text-on-surface">{tenant.property}</p>
-                      <p className="text-body-sm text-on-surface-variant">{tenant.rent} / month</p>
-                    </td>
-                    <td className="p-4">
-                      <Badge variant={
-                        tenant.status === 'Active' ? 'success' : 
-                        tenant.status === 'Pending' ? 'warning' : 'error'
-                      }>
-                        {tenant.status}
-                      </Badge>
-                    </td>
-                    <td className="p-4 text-right">
-                      <Button variant="ghost" className="p-2 w-10 h-10 rounded-full">
-                        <MoreVertical className="w-5 h-5 text-on-surface-variant" />
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </Card>
+      ) : filtered.length === 0 ? (
+        <div className="text-center py-xl text-on-surface-variant">
+          <span className="material-symbols-outlined text-6xl mb-md block text-outline">group</span>
+          <p className="font-h3 text-h3 mb-sm">{search ? 'No tenants match your search' : 'No tenants yet'}</p>
+          <p className="font-body-md text-body-md">Tenants will appear here once they join your properties.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-lg">
+          {filtered.map(t => {
+            const activeLease = t.leases?.find(l => l.status === 'ACTIVE');
+            return (
+              <div key={t.id} className="bg-surface-container-lowest rounded-xl p-lg soft-shadow border border-outline-variant/20 hover:-translate-y-1 transition-transform">
+                <div className="flex items-center gap-md mb-md">
+                  <div className="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-primary font-semibold text-lg">
+                    {t.profile?.firstName?.[0]}{t.profile?.lastName?.[0]}
+                  </div>
+                  <div>
+                    <p className="font-body-md font-semibold text-on-surface">
+                      {t.profile?.firstName} {t.profile?.lastName}
+                    </p>
+                    <p className="font-body-sm text-body-sm text-outline">{t.email}</p>
+                  </div>
+                </div>
+                {activeLease ? (
+                  <div className="bg-surface-container rounded-lg p-sm mt-sm">
+                    <p className="text-xs text-outline mb-1">Active Lease</p>
+                    <p className="font-body-sm font-semibold text-on-surface">
+                      Unit {activeLease.unit?.unitNumber} – {activeLease.unit?.property?.name}
+                    </p>
+                    <p className="text-xs text-primary font-semibold mt-1">
+                      ₹{Number(activeLease.rentAmount).toLocaleString('en-IN')}/mo
+                    </p>
+                  </div>
+                ) : (
+                  <span className="text-xs text-outline">No active lease</span>
+                )}
+                {t.profile?.phone && (
+                  <div className="flex items-center gap-1 mt-sm text-xs text-outline">
+                    <span className="material-symbols-outlined text-sm">call</span>
+                    {t.profile.phone}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

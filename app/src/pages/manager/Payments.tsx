@@ -1,145 +1,115 @@
-import { useState, useEffect } from 'react';
-import { DollarSign, Download, ArrowUpRight, ArrowDownRight, Clock } from 'lucide-react';
-import { Card } from '../../components/ui/Card';
-import { Button } from '../../components/ui/Button';
-import { Badge } from '../../components/ui/Badge';
-import { PageLoader } from '../../components/ui/Loader';
+import { useEffect, useState } from 'react';
+import { api } from '../../services/api';
 
-// Mock Data
-const mockTransactions = [
-  { id: 'TX-1001', tenant: 'John Doe', property: 'Sunset Apartments, 4B', amount: 1200, status: 'Completed', date: '2023-11-01', type: 'Rent' },
-  { id: 'TX-1002', tenant: 'Emily Davis', property: 'Maple Street House', amount: 3000, status: 'Pending', date: '2023-11-02', type: 'Rent' },
-  { id: 'TX-1003', tenant: 'Maintenance Co.', property: 'Oceanview Condos', amount: -450, status: 'Completed', date: '2023-11-05', type: 'Expense' },
-  { id: 'TX-1004', tenant: 'Jane Smith', property: 'Oceanview Condos, 12A', amount: 2500, status: 'Completed', date: '2023-11-05', type: 'Deposit' },
-];
+interface Payment {
+  id: string;
+  amount: number;
+  status: string;
+  dueDate: string;
+  paidDate?: string;
+  paymentMethod?: string;
+  tenant: { profile: { firstName: string; lastName: string } };
+  lease: { unit: { unitNumber: string; property: { name: string } } };
+}
 
-export default function Payments() {
-  const [isLoading, setIsLoading] = useState(true);
+export default function ManagerPayments() {
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<'ALL' | 'PENDING' | 'COMPLETED' | 'OVERDUE'>('ALL');
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 800);
-    return () => clearTimeout(timer);
+    api.get('/payments')
+      .then(r => setPayments(r.data))
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
 
-  if (isLoading) return <PageLoader />;
+  const filtered = filter === 'ALL' ? payments : payments.filter(p => p.status === filter);
+  const total = payments.reduce((s, p) => s + Number(p.amount), 0);
+  const collected = payments.filter(p => p.status === 'COMPLETED').reduce((s, p) => s + Number(p.amount), 0);
+  const pending = payments.filter(p => p.status === 'PENDING').reduce((s, p) => s + Number(p.amount), 0);
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-h2 font-h2 text-on-surface">Payments</h1>
-          <p className="text-body-sm text-on-surface-variant">Track your revenue, expenses, and pending transactions.</p>
-        </div>
-        <div className="flex gap-3 w-full sm:w-auto">
-          <Button variant="outline" className="flex-1 sm:flex-none">
-            <Download className="w-4 h-4 mr-2" />
-            Export
-          </Button>
-          <Button className="flex-1 sm:flex-none">
-            Receive Payment
-          </Button>
-        </div>
+    <div className="max-w-container-max mx-auto w-full">
+      <div className="mb-8">
+        <h1 className="font-h1 text-h1 text-on-surface mb-1">Payments</h1>
+        <p className="font-body-sm text-body-sm text-on-surface-variant">Track rent collections across all your properties.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-6 flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <p className="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Revenue</p>
-            <div className="p-2 bg-primary-container/10 rounded-full">
-              <DollarSign className="w-5 h-5 text-primary" />
+      {/* Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-lg mb-lg">
+        {[
+          { label: 'Total Billed', value: total, icon: 'receipt_long', color: 'text-primary' },
+          { label: 'Collected', value: collected, icon: 'check_circle', color: 'text-green-600' },
+          { label: 'Pending', value: pending, icon: 'pending', color: 'text-amber-600' },
+        ].map(({ label, value, icon, color }) => (
+          <div key={label} className="bg-surface-container-lowest rounded-xl p-lg soft-shadow flex items-center gap-md">
+            <span className={`material-symbols-outlined text-3xl ${color}`}>{icon}</span>
+            <div>
+              <p className="font-body-sm text-body-sm text-outline">{label}</p>
+              <p className="font-h2 text-h2 text-on-surface">₹{value.toLocaleString('en-IN')}</p>
             </div>
           </div>
-          <h3 className="text-3xl font-bold text-on-surface">$24,500</h3>
-          <p className="text-body-sm text-success flex items-center gap-1 font-medium">
-            <ArrowUpRight className="w-4 h-4" /> +12% from last month
-          </p>
-        </Card>
-        
-        <Card className="p-6 flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <p className="font-label-caps text-label-caps text-on-surface-variant uppercase">Pending Payments</p>
-            <div className="p-2 bg-warning-container/20 rounded-full">
-              <Clock className="w-5 h-5 text-warning" />
-            </div>
-          </div>
-          <h3 className="text-3xl font-bold text-on-surface">$4,200</h3>
-          <p className="text-body-sm text-on-surface-variant">3 invoices awaiting payment</p>
-        </Card>
-
-        <Card className="p-6 flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <p className="font-label-caps text-label-caps text-on-surface-variant uppercase">Total Expenses</p>
-            <div className="p-2 bg-error-container/20 rounded-full">
-              <ArrowDownRight className="w-5 h-5 text-error" />
-            </div>
-          </div>
-          <h3 className="text-3xl font-bold text-on-surface">$3,150</h3>
-          <p className="text-body-sm text-error flex items-center gap-1 font-medium">
-            <ArrowUpRight className="w-4 h-4" /> +5% from last month
-          </p>
-        </Card>
-
-        <Card className="p-6 flex flex-col gap-2">
-          <div className="flex items-center justify-between">
-            <p className="font-label-caps text-label-caps text-on-surface-variant uppercase">Net Income</p>
-            <div className="p-2 bg-success-container/20 rounded-full">
-              <DollarSign className="w-5 h-5 text-success" />
-            </div>
-          </div>
-          <h3 className="text-3xl font-bold text-on-surface">$21,350</h3>
-          <p className="text-body-sm text-success flex items-center gap-1 font-medium">
-            <ArrowUpRight className="w-4 h-4" /> +14% from last month
-          </p>
-        </Card>
+        ))}
       </div>
 
-      <Card className="p-0 overflow-hidden">
-        <div className="p-6 border-b border-surface-container-highest">
-          <h3 className="text-xl font-bold text-on-surface">Recent Transactions</h3>
+      {/* Filter Tabs */}
+      <div className="flex items-center gap-2 mb-lg">
+        {(['ALL', 'PENDING', 'COMPLETED', 'OVERDUE'] as const).map(f => (
+          <button key={f} onClick={() => setFilter(f)}
+            className={`px-4 py-1.5 rounded-full font-body-sm text-body-sm font-medium transition-colors ${
+              filter === f ? 'bg-primary text-on-primary' : 'bg-surface-container text-on-surface-variant hover:bg-surface-variant'
+            }`}
+          >{f}</button>
+        ))}
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-xl">
+          <span className="material-symbols-outlined animate-spin text-primary text-4xl">progress_activity</span>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-surface-container-low/50">
-                <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">ID / Date</th>
-                <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Tenant / Property</th>
-                <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Type</th>
-                <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Amount</th>
-                <th className="p-4 font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider text-right">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-surface-container-highest">
-              {mockTransactions.map((tx) => (
-                <tr key={tx.id} className="hover:bg-surface-container-low/30 transition-colors">
-                  <td className="p-4">
-                    <p className="font-medium text-on-surface">{tx.id}</p>
-                    <p className="text-body-sm text-on-surface-variant">{tx.date}</p>
-                  </td>
-                  <td className="p-4">
-                    <p className="font-medium text-on-surface">{tx.tenant}</p>
-                    <p className="text-body-sm text-on-surface-variant truncate max-w-[200px]">{tx.property}</p>
-                  </td>
-                  <td className="p-4">
-                    <span className="text-body-sm px-2 py-1 bg-surface-container rounded-md border border-outline-variant">
-                      {tx.type}
-                    </span>
-                  </td>
-                  <td className="p-4 text-right">
-                    <p className={`font-bold ${tx.amount > 0 ? 'text-success' : 'text-error'}`}>
-                      {tx.amount > 0 ? '+' : ''}${Math.abs(tx.amount).toLocaleString()}
-                    </p>
-                  </td>
-                  <td className="p-4 text-right">
-                    <Badge variant={tx.status === 'Completed' ? 'success' : 'warning'}>
-                      {tx.status}
-                    </Badge>
-                  </td>
+      ) : filtered.length === 0 ? (
+        <div className="text-center py-xl text-on-surface-variant">
+          <span className="material-symbols-outlined text-6xl mb-md block text-outline">payments</span>
+          <p>No payments found.</p>
+        </div>
+      ) : (
+        <div className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant/30">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="bg-surface-container">
+                <tr>
+                  {['Tenant', 'Property / Unit', 'Due Date', 'Paid Date', 'Amount', 'Status'].map(h => (
+                    <th key={h} className="pb-3 pt-3 px-4 font-label-caps text-label-caps text-outline">{h}</th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtered.map(p => (
+                  <tr key={p.id} className="border-t border-surface-container hover:bg-surface-container/50 transition-colors">
+                    <td className="py-3 px-4 font-medium text-on-surface">
+                      {p.tenant?.profile?.firstName} {p.tenant?.profile?.lastName}
+                    </td>
+                    <td className="py-3 px-4 text-on-surface-variant text-sm">
+                      Unit {p.lease?.unit?.unitNumber} – {p.lease?.unit?.property?.name}
+                    </td>
+                    <td className="py-3 px-4 text-outline text-sm">{new Date(p.dueDate).toLocaleDateString('en-IN')}</td>
+                    <td className="py-3 px-4 text-outline text-sm">{p.paidDate ? new Date(p.paidDate).toLocaleDateString('en-IN') : '—'}</td>
+                    <td className="py-3 px-4 font-semibold text-on-surface">₹{Number(p.amount).toLocaleString('en-IN')}</td>
+                    <td className="py-3 px-4">
+                      <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${
+                        p.status === 'COMPLETED' ? 'bg-green-50 text-green-700' :
+                        p.status === 'OVERDUE' ? 'bg-red-50 text-red-700' :
+                        'bg-amber-50 text-amber-700'
+                      }`}>{p.status}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </Card>
+      )}
     </div>
   );
 }

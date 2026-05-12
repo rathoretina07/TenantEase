@@ -26,6 +26,7 @@ const Analytics = React.lazy(() => import('./pages/manager/Analytics'));
 const TenantPayments = React.lazy(() => import('./pages/tenant/Payments'));
 const TenantProfile = React.lazy(() => import('./pages/tenant/Profile'));
 const Messages = React.lazy(() => import('./pages/shared/Messages'));
+const ContactUs = React.lazy(() => import('./pages/shared/ContactUs'));
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
         {/* Backward Compatibility or Generic Links */}
         <Route path="/login" element={<Navigate to="/auth-choice" replace />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/contact" element={<ContactUs />} />
         
         {/* Manager Routes */}
         <Route element={<ProtectedRoute allowedRoles={['manager']} />}>
