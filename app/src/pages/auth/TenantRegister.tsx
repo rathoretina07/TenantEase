@@ -1,7 +1,34 @@
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { useAuthStore } from '../../store/authStore';
+
+const schema = z.object({
+  firstName: z.string().min(2, 'First name is required'),
+  lastName: z.string().min(2, 'Last name is required'),
+  email: z.string().email('Invalid email'),
+  password: z.string().min(6, 'At least 6 characters'),
+  terms: z.boolean().refine((v) => v, 'You must accept the terms'),
+});
+type FormValues = z.infer<typeof schema>;
 
 export default function TenantRegister() {
   const navigate = useNavigate();
+  const { register: registerUser, error: authError, isLoading } = useAuthStore();
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { firstName: '', lastName: '', email: '', password: '', terms: false }
+  });
+
+  const onSubmit = async (data: FormValues) => {
+    try {
+      await registerUser({ email: data.email, password: data.password, role: 'TENANT', firstName: data.firstName, lastName: data.lastName });
+      navigate('/tenant/dashboard');
+    } catch (err: any) {
+      setError('root', { message: err.message });
+    }
+  };
 
   return (
     <div className="bg-background min-h-screen flex text-on-background font-body-md antialiased">
@@ -24,15 +51,30 @@ export default function TenantRegister() {
             <p className="font-body-md text-body-md text-on-surface-variant">Enter your details to begin setting up your tenant portal.</p>
           </div>
           {/* Registration Form */}
-          <form className="space-y-lg" onSubmit={(e) => { e.preventDefault(); navigate('/verify-identity'); }}>
-            {/* Full Name */}
-            <div>
-              <label className="block font-label-caps text-label-caps text-on-surface-variant mb-xs ml-1" htmlFor="fullName">Full Name</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="material-symbols-outlined text-outline-variant text-body-md">person</span>
+          {(authError || errors.root) && (
+            <div className="mb-md p-md rounded-lg bg-error-container text-on-error-container text-sm text-center">
+              {errors.root?.message || authError}
+            </div>
+          )}
+          <form className="space-y-lg" onSubmit={handleSubmit(onSubmit)}>
+            {/* First & Last Name */}
+            <div className="grid grid-cols-2 gap-md">
+              <div>
+                <label className="block font-label-caps text-label-caps text-on-surface-variant mb-xs ml-1" htmlFor="firstName">First Name</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <span className="material-symbols-outlined text-outline-variant text-body-md">person</span>
+                  </div>
+                  <input className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all outline-none" id="firstName" placeholder="Jane" type="text" {...register('firstName')} />
                 </div>
-                <input className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all outline-none" id="fullName" name="fullName" placeholder="Jane Doe" required type="text" />
+                {errors.firstName && <p className="text-error text-xs mt-xs">{errors.firstName.message}</p>}
+              </div>
+              <div>
+                <label className="block font-label-caps text-label-caps text-on-surface-variant mb-xs ml-1" htmlFor="lastName">Last Name</label>
+                <div className="relative">
+                  <input className="block w-full pl-3 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all outline-none" id="lastName" placeholder="Doe" type="text" {...register('lastName')} />
+                </div>
+                {errors.lastName && <p className="text-error text-xs mt-xs">{errors.lastName.message}</p>}
               </div>
             </div>
             {/* Email */}
@@ -42,18 +84,9 @@ export default function TenantRegister() {
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <span className="material-symbols-outlined text-outline-variant text-body-md">mail</span>
                 </div>
-                <input autoComplete="email" className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all outline-none" id="email" name="email" placeholder="jane@example.com" required type="email" />
+                <input autoComplete="email" className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all outline-none" id="email" placeholder="jane@example.com" type="email" {...register('email')} />
               </div>
-            </div>
-            {/* Phone Number */}
-            <div>
-              <label className="block font-label-caps text-label-caps text-on-surface-variant mb-xs ml-1" htmlFor="phone">Phone Number</label>
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <span className="material-symbols-outlined text-outline-variant text-body-md">call</span>
-                </div>
-                <input autoComplete="tel" className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all outline-none" id="phone" name="phone" placeholder="(555) 000-0000" required type="tel" />
-              </div>
+              {errors.email && <p className="text-error text-xs mt-xs">{errors.email.message}</p>}
             </div>
             {/* Password */}
             <div>
@@ -62,13 +95,14 @@ export default function TenantRegister() {
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <span className="material-symbols-outlined text-outline-variant text-body-md">lock</span>
                 </div>
-                <input autoComplete="new-password" className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all outline-none" id="password" name="password" placeholder="••••••••" required type="password" />
+                <input autoComplete="new-password" className="block w-full pl-10 pr-3 py-3 bg-surface-container-low border-0 text-on-surface rounded-lg shadow-sm ring-1 ring-inset ring-outline-variant focus:ring-2 focus:ring-inset focus:ring-primary focus:bg-surface sm:text-body-sm transition-all outline-none" id="password" placeholder="••••••••" type="password" {...register('password')} />
               </div>
+              {errors.password && <p className="text-error text-xs mt-xs">{errors.password.message}</p>}
             </div>
-            {/* Terms and Conditions */}
+            {/* Terms */}
             <div className="flex items-start">
               <div className="flex items-center h-5">
-                <input className="focus:ring-primary h-4 w-4 text-primary border-outline-variant rounded bg-surface-container-low" id="terms" name="terms" required type="checkbox" />
+                <input className="focus:ring-primary h-4 w-4 text-primary border-outline-variant rounded bg-surface-container-low" id="terms" type="checkbox" {...register('terms')} />
               </div>
               <div className="ml-3 text-body-sm">
                 <label className="font-body-sm text-on-surface-variant" htmlFor="terms">
@@ -76,11 +110,12 @@ export default function TenantRegister() {
                 </label>
               </div>
             </div>
-            {/* Submit Button */}
+            {errors.terms && <p className="text-error text-xs">{errors.terms.message}</p>}
+            {/* Submit */}
             <div>
-              <button className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-lg font-body-md font-semibold text-on-primary bg-gradient-to-r from-primary to-secondary shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:shadow-[0_6px_20px_rgba(79,70,229,0.23)] hover:-translate-y-0.5 transition-all duration-200 ring-1 ring-inset ring-white/20" type="submit">
-                Create Tenant Account
-                <span className="material-symbols-outlined text-body-sm">arrow_forward</span>
+              <button className="w-full flex justify-center items-center gap-2 py-3 px-4 rounded-lg font-body-md font-semibold text-on-primary bg-gradient-to-r from-primary to-secondary shadow-[0_4px_14px_0_rgba(79,70,229,0.39)] hover:opacity-90 transition-all duration-200 disabled:opacity-60" type="submit" disabled={isSubmitting || isLoading}>
+                {isSubmitting || isLoading ? 'Creating Account…' : 'Create Tenant Account'}
+                {!isSubmitting && !isLoading && <span className="material-symbols-outlined text-body-sm">arrow_forward</span>}
               </button>
             </div>
           </form>

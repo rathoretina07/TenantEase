@@ -16,27 +16,20 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LandlordLogin() {
   const navigate = useNavigate();
-  const { login } = useAuthStore();
+  const { login, error: authError, isLoading } = useAuthStore();
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormValues>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setError } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-      remember: false,
-    }
+    defaultValues: { email: '', password: '', remember: false }
   });
 
   const onSubmit = async (data: LoginFormValues) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    login({
-      id: 'mock-123',
-      email: data.email,
-      name: 'Alex Landlord',
-      role: 'manager'
-    });
-    navigate('/manager/dashboard');
+    try {
+      await login(data.email, data.password, 'manager');
+      navigate('/manager/dashboard');
+    } catch (err: any) {
+      setError('root', { message: err.message });
+    }
   };
 
   return (
@@ -63,6 +56,14 @@ export default function LandlordLogin() {
             <h1 className="font-h2 text-h2 text-on-surface mb-xs">Welcome back</h1>
             <p className="font-body-sm text-body-sm text-on-surface-variant">Please enter your details to sign in.</p>
           </div>
+
+          {/* Show API errors */}
+          {(authError || errors.root) && (
+            <div className="mb-md p-md rounded-lg bg-error-container text-on-error-container text-sm text-center">
+              {errors.root?.message || authError}
+            </div>
+          )}
+
           <form className="flex flex-col gap-lg" onSubmit={handleSubmit(onSubmit)}>
             <div className="flex flex-col gap-xs">
               <label className="font-label-caps text-label-caps text-on-surface-variant uppercase" htmlFor="email">Email address</label>
@@ -88,28 +89,13 @@ export default function LandlordLogin() {
               </label>
               <a className="font-body-sm text-body-sm text-primary hover:text-primary-container font-semibold transition-colors" href="#">Forgot password?</a>
             </div>
-            <Button className="w-full justify-center gap-sm h-12" type="submit" isLoading={isSubmitting}>
+            <Button className="w-full justify-center gap-sm h-12" type="submit" isLoading={isSubmitting || isLoading}>
               Sign in
-              {!isSubmitting && <span className="material-symbols-outlined text-[20px]">arrow_forward</span>}
+              {!isSubmitting && !isLoading && <span className="material-symbols-outlined text-[20px]">arrow_forward</span>}
             </Button>
           </form>
-          <div className="mt-lg relative flex items-center">
-            <div className="flex-grow border-t border-outline-variant"></div>
-            <span className="flex-shrink-0 mx-md font-body-sm text-body-sm text-on-surface-variant">Or continue with</span>
-            <div className="flex-grow border-t border-outline-variant"></div>
-          </div>
-          <div className="mt-lg grid grid-cols-2 gap-md">
-            <button className="flex items-center justify-center gap-sm w-full bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant text-on-surface font-body-md text-body-md py-sm px-md rounded-lg transition-colors shadow-sm" type="button">
-              <span className="material-symbols-outlined text-[20px]">language</span>
-              Google
-            </button>
-            <button className="flex items-center justify-center gap-sm w-full bg-surface-container-lowest hover:bg-surface-container-low border border-outline-variant text-on-surface font-body-md text-body-md py-sm px-md rounded-lg transition-colors shadow-sm" type="button">
-              <span className="material-symbols-outlined text-[20px]">devices</span>
-              Apple
-            </button>
-          </div>
           <p className="mt-xl text-center font-body-sm text-body-sm text-on-surface-variant">
-            Don't have an account? 
+            Don't have an account?{' '}
             <a className="text-primary hover:text-primary-container font-semibold transition-colors cursor-pointer" onClick={() => navigate('/register/landlord')}>Sign up</a>
           </p>
         </div>
