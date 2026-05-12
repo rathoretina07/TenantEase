@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TenantEase Project Documentation</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --primary: #3525CD;
+            --secondary: #6B7280;
+            --background: #F9FAFB;
+            --surface: #FFFFFF;
+            --text: #111827;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: var(--background);
+            margin: 0;
+            padding: 0;
+        }
+        #content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: var(--surface);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        h1 { color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 10px; }
+        h2 { color: var(--primary); margin-top: 30px; border-left: 4px solid var(--primary); padding-left: 10px; }
+        h3 { color: var(--secondary); }
+        .tech-tag {
+            display: inline-block;
+            background: #E5E7EB;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            margin: 2px;
+        }
+        .erd-container {
+            background: #F3F4F6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8em;
+            color: var(--secondary);
+        }
+        #download-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+        #download-btn:hover { background: #2a1da6; }
+    </style>
+</head>
+<body>
+    <button id="download-btn">Save as PDF</button>
+
+    <div id="content">
+        <h1>TenantEase Project Documentation</h1>
+        <p><strong>Version:</strong> 1.0.0 (Production Ready)</p>
+        <p><strong>Year:</strong> 2026</p>
+        <p><strong>Developers:</strong> Tina Rathore & Bhavya Bindal</p>
+
+        <h2>Project Overview</h2>
+        <p>TenantEase is a premium property management platform designed to streamline the relationship between landlords/managers and tenants. It provides a full-stack solution for property listing, tenant management, automated payment tracking, and real-time communication.</p>
+
+        <h2>Frontend Architecture</h2>
+        <p>Built with modern React standards, the frontend focuses on performance, accessibility, and high-end aesthetics.</p>
+        <ul>
+            <li><strong>Framework:</strong> React with Vite for lightning-fast development.</li>
+            <li><strong>Language:</strong> TypeScript for type safety and robust code.</li>
+            <li><strong>Styling:</strong> Vanilla CSS + Tailwind CSS utilities for a "Glassmorphism" and modern UI.</li>
+            <li><strong>State Management:</strong> Zustand for lightweight and fast global state.</li>
+            <li><strong>Routing:</strong> React Router DOM with Lazy Loading for optimized bundle sizes.</li>
+            <li><strong>API Client:</strong> Axios with interceptors for JWT session management.</li>
+        </ul>
+
+        <h2>Backend Architecture</h2>
+        <p>The backend is a robust Node.js Express server designed for scalability and security.</p>
+        <ul>
+            <li><strong>Runtime:</strong> Node.js with Express.js framework.</li>
+            <li><strong>Language:</strong> TypeScript.</li>
+            <li><strong>Database ORM:</strong> Prisma for type-safe database queries.</li>
+            <li><strong>Authentication:</strong> JWT (JSON Web Tokens) with secure password hashing (Bcrypt).</li>
+            <li><strong>Validation:</strong> Zod for runtime schema validation.</li>
+            <li><strong>Security:</strong> Role-Based Access Control (RBAC) middleware for Manager and Tenant permissions.</li>
+        </ul>
+
+        <h2>Database & ERD</h2>
+        <p>The system uses a relational database structure, currently running on <strong>SQLite</strong> for development and configured for <strong>PostgreSQL (Supabase)</strong> for production.</p>
+        
+        <div class="erd-container">
+            <h3>Entity Relationship Diagram (ERD)</h3>
+            <div class="mermaid">
+                erDiagram
+                    USER ||--o| PROFILE : "has"
+                    USER ||--o{ PROPERTY : "manages (Manager)"
+                    USER ||--o{ LEASE : "signed by (Tenant)"
+                    USER ||--o{ PAYMENT : "makes (Tenant)"
+                    USER ||--o{ MESSAGE : "sends/receives"
+                    USER ||--o{ NOTIFICATION : "receives"
+                    
+                    PROPERTY ||--|{ UNIT : "contains"
+                    UNIT ||--o{ LEASE : "is leased"
+                    LEASE ||--o{ PAYMENT : "generates"
+                    
+                    USER {
+                        string id PK
+                        string email UK
+                        string role
+                        boolean isVerified
+                    }
+                    PROFILE {
+                        string id PK
+                        string userId FK
+                        string firstName
+                        string lastName
+                    }
+                    PROPERTY {
+                        string id PK
+                        string managerId FK
+                        string name
+                        string address
+                    }
+                    UNIT {
+                        string id PK
+                        string propertyId FK
+                        string unitNumber
+                        float rentAmount
+                    }
+                    LEASE {
+                        string id PK
+                        string unitId FK
+                        string tenantId FK
+                        date startDate
+                        date endDate
+                        float rentAmount
+                    }
+                    PAYMENT {
+                        string id PK
+                        string leaseId FK
+                        string tenantId FK
+                        float amount
+                        string status
+                        date dueDate
+                    }
+            </div>
+        </div>
+
+        <h2>Key Features</h2>
+        <ul>
+            <li><strong>Manager Dashboard:</strong> Real-time analytics on revenue, occupancy, and pending tasks.</li>
+            <li><strong>Tenant Portal:</strong> View lease details, pay rent online, and update profile information.</li>
+            <li><strong>Unified Messaging:</strong> Direct chat between managers and tenants for maintenance and queries.</li>
+            <li><strong>Automated Payments:</strong> Tracks payment statuses (Pending, Completed, Overdue) automatically.</li>
+        </ul>
+
+        <footer>
+            <p>&copy; 2026 TenantEase - Tina Rathore & Bhavya Bindal. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({ startOnLoad: true });
+
+        // PDF Generation
+        document.getElementById('download-btn').onclick = function() {
+            const element = document.getElementById('content');
+            const opt = {
+                margin:       10,
+                filename:     'TenantEase_Project_Report.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        };
+
+        // Automatically trigger after a short delay for mermaid to render
+        window.onload = function() {
+            setTimeout(() => {
+                // We won't auto-download to avoid annoying the user, 
+                // but the instructions will tell them to click the button.
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
