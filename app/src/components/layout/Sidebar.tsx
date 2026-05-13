@@ -19,14 +19,21 @@ interface SidebarProps {
 export function Sidebar({ items, type, isOpen, onClose }: SidebarProps) {
   const navigate = useNavigate();
   const { logout } = useAuthStore();
-  const [isDark, setIsDark] = useState(() => document.documentElement.classList.contains('dark'));
+  const [isDark, setIsDark] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return document.documentElement.classList.contains('dark');
+    }
+    return false;
+  });
 
   const toggleDarkMode = () => {
     if (isDark) {
       document.documentElement.classList.remove('dark');
+      localStorage.setItem('tenantease_theme', 'light');
       setIsDark(false);
     } else {
       document.documentElement.classList.add('dark');
+      localStorage.setItem('tenantease_theme', 'dark');
       setIsDark(true);
     }
   };
@@ -41,7 +48,7 @@ export function Sidebar({ items, type, isOpen, onClose }: SidebarProps) {
         />
       )}
       <aside className={cn(
-        "fixed left-0 top-0 h-full flex-col p-4 w-64 border-r border-white/10 bg-slate-50/50 dark:bg-slate-950/50 backdrop-blur-xl shadow-xl z-50 transition-transform duration-300",
+        "fixed left-0 top-0 h-full flex-col p-4 w-64 border-r border-white/10 bg-slate-50/80 dark:bg-slate-950/90 backdrop-blur-xl shadow-xl z-50 transition-transform duration-300",
         isOpen ? "translate-x-0 flex" : "-translate-x-full md:translate-x-0 md:flex hidden"
       )}>
       {/* Header */}
@@ -68,11 +75,12 @@ export function Sidebar({ items, type, isOpen, onClose }: SidebarProps) {
           <NavLink
             key={item.href}
             to={item.href}
+            onClick={onClose}
             className={({ isActive }) => cn(
               "flex items-center gap-sm py-2 px-4 rounded-xl transition-all hover:translate-x-1 group",
               isActive 
                 ? "bg-white dark:bg-slate-800 text-indigo-600 dark:text-indigo-400 shadow-sm" 
-                : "text-slate-500 dark:text-slate-400 hover:bg-surface-container-low"
+                : "text-slate-500 dark:text-slate-400 hover:bg-surface-container-low dark:hover:bg-slate-800/50"
             )}
           >
             <span className={cn(
@@ -94,23 +102,39 @@ export function Sidebar({ items, type, isOpen, onClose }: SidebarProps) {
       {/* CTA & Footer */}
       <div className="mt-auto pt-lg flex flex-col gap-md">
         {type === 'manager' && (
-          <button className="w-full bg-gradient-to-r from-primary to-secondary text-on-primary rounded-lg py-2 px-4 font-body-md text-body-md flex items-center justify-center gap-xs active:opacity-80 transition-all hover:-translate-y-0.5 shadow-md">
+          <button
+            onClick={() => { navigate('/manager/payments'); onClose?.(); }}
+            className="w-full bg-gradient-to-r from-primary to-secondary text-on-primary rounded-lg py-2 px-4 font-body-md text-body-md flex items-center justify-center gap-xs active:opacity-80 transition-all hover:-translate-y-0.5 shadow-md"
+          >
             <span className="material-symbols-outlined text-[20px]">add</span>
             Record Payment
           </button>
         )}
-        <div className="flex flex-col gap-xs pt-md border-t border-surface-container-highest">
-          <a className="flex items-center gap-sm text-slate-500 dark:text-slate-400 py-2 px-4 hover:translate-x-1 transition-transform group rounded-xl hover:bg-surface-container-low" href="#">
+        <div className="flex flex-col gap-xs pt-md border-t border-surface-container-highest dark:border-slate-700">
+          <button
+            className="flex items-center gap-sm text-slate-500 dark:text-slate-400 py-2 px-4 hover:translate-x-1 transition-transform group rounded-xl hover:bg-surface-container-low dark:hover:bg-slate-800/50 text-left"
+            onClick={() => { navigate('/contact'); onClose?.(); }}
+          >
             <span className="material-symbols-outlined text-[20px]">help</span>
             <span className="font-body-sm text-body-sm">Help Center</span>
-          </a>
+          </button>
           <button 
-            className="flex items-center justify-between w-full text-slate-500 dark:text-slate-400 py-2 px-4 hover:translate-x-1 transition-transform group rounded-xl hover:bg-surface-container-low"
+            className="flex items-center justify-between w-full text-slate-500 dark:text-slate-400 py-2 px-4 hover:translate-x-1 transition-transform group rounded-xl hover:bg-surface-container-low dark:hover:bg-slate-800/50"
             onClick={toggleDarkMode}
           >
             <div className="flex items-center gap-sm">
               <span className="material-symbols-outlined text-[20px]">{isDark ? 'light_mode' : 'dark_mode'}</span>
               <span className="font-body-sm text-body-sm">{isDark ? 'Light Mode' : 'Dark Mode'}</span>
+            </div>
+            {/* Toggle pill */}
+            <div className={cn(
+              "w-10 h-5 rounded-full transition-colors relative",
+              isDark ? "bg-primary" : "bg-outline-variant"
+            )}>
+              <div className={cn(
+                "absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-all",
+                isDark ? "left-5" : "left-0.5"
+              )} />
             </div>
           </button>
           <button 

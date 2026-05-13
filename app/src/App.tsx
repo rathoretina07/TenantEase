@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { ProtectedRoute } from './components/layout/ProtectedRoute';
 import { PageLoader } from './components/ui/Loader';
@@ -51,7 +52,7 @@ function App() {
         
         {/* Manager Routes */}
         <Route element={<ProtectedRoute allowedRoles={['manager']} />}>
-          <Route path="/manager" element={<DashboardLayout type="manager" userName="Alex" />}>
+          <Route path="/manager" element={<DashboardLayout type="manager" />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<ManagerDashboard />} />
             <Route path="properties" element={<Properties />} />
@@ -64,7 +65,7 @@ function App() {
         
         {/* Tenant Routes */}
         <Route element={<ProtectedRoute allowedRoles={['tenant']} />}>
-          <Route path="/tenant" element={<DashboardLayout type="tenant" userName="Sarah" />}>
+          <Route path="/tenant" element={<DashboardLayout type="tenant" />}>
             <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<TenantDashboard />} />
             <Route path="payments" element={<TenantPayments />} />
@@ -74,6 +75,20 @@ function App() {
         </Route>
         </Routes>
       </Suspense>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          className: 'font-sans text-sm',
+          duration: 4000,
+          style: {
+            background: 'var(--color-surface-container-lowest)',
+            color: 'var(--color-on-surface)',
+            border: '1px solid var(--color-outline-variant)',
+            borderRadius: '12px',
+            boxShadow: '0 10px 40px -5px rgba(53,37,205,0.2)',
+          },
+        }}
+      />
     </Router>
   );
 }

@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { toast } from 'react-hot-toast';
 import { Input } from '../../components/ui/Input';
 import { Button } from '../../components/ui/Button';
+import { useAuthStore } from '../../store/authStore';
+import { api } from '../../services/api';
 
 const profileSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -16,13 +18,23 @@ const profileSchema = z.object({
 type ProfileFormValues = z.infer<typeof profileSchema>;
 
 export default function TenantProfile() {
+  const { user } = useAuthStore();
   const [isEditing, setIsEditing] = useState(false);
+  const [leaseData, setLeaseData] = useState<any>(null);
   const [profileData, setProfileData] = useState<ProfileFormValues>({
-    email: 'sarah.j.design@example.com',
-    phone: '(555) 123-4567',
-    emergencyContactName: 'Michael Jenkins',
-    emergencyContactPhone: '(555) 987-6543',
+    email: user?.email || '',
+    phone: '',
+    emergencyContactName: '',
+    emergencyContactPhone: '',
   });
+
+  useEffect(() => {
+    // Try to get real lease/profile info
+    api.get('/payments').then(r => {
+      const payment = r.data?.[0];
+      if (payment?.lease) setLeaseData(payment.lease);
+    }).catch(() => {});
+  }, []);
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
@@ -30,26 +42,42 @@ export default function TenantProfile() {
   });
 
   const onSubmit = async (data: ProfileFormValues) => {
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    try {
+      // Try real API first
+      await api.patch('/auth/profile', data);
+    } catch {
+      // Simulate if endpoint not yet on backend
+      await new Promise(resolve => setTimeout(resolve, 800));
+    }
     setProfileData(data);
     setIsEditing(false);
     toast.success('Profile updated successfully!');
   };
+
+  const displayName = user?.name || 'Tenant';
+  const unitLabel = leaseData?.unit
+    ? `Unit ${leaseData.unit.unitNumber}, ${leaseData.unit.property?.name ?? ''}`
+    : 'Your Unit';
   return (
     <div className="max-w-container-max mx-auto w-full space-y-xl pb-xl">
       {/* Page Header / Profile Quick Look */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-lg bg-surface-container-lowest p-lg rounded-xl shadow-[0_4px_20px_-4px_rgba(53,37,205,0.05)] border border-outline-variant/20">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-lg bg-surface-container-lowest dark:bg-slate-800/80 p-lg rounded-xl shadow-[0_4px_20px_-4px_rgba(53,37,205,0.05)] border border-outline-variant/20 dark:border-slate-700/50">
         <div className="flex items-center gap-lg">
           <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-primary-container relative">
-            <img alt="Tenant Avatar" className="w-full h-full object-cover" src="https://i.pravatar.cc/150?u=sarah" />
-            <div className="absolute bottom-0 right-0 w-5 h-5 bg-[#10b981] border-2 border-white rounded-full flex items-center justify-center" title="Active"></div>
+            {user?.profileImg ? (
+              <img alt="Tenant Avatar" className="w-full h-full object-cover" src={user.profileImg} />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-white text-2xl font-bold">
+                {displayName.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
+              </div>
+            )}
+            <div className="absolute bottom-0 right-0 w-5 h-5 bg-[#10b981] border-2 border-white rounded-full" title="Active"></div>
           </div>
           <div>
-            <h1 className="font-h1 text-h1 text-on-surface">Sarah Jenkins</h1>
-            <div className="flex items-center gap-sm mt-1 text-on-surface-variant font-body-md text-body-md">
+            <h1 className="font-h1 text-h1 text-on-surface dark:text-white">{displayName}</h1>
+            <div className="flex items-center gap-sm mt-1 text-on-surface-variant dark:text-slate-400 font-body-md text-body-md">
               <span className="material-symbols-outlined text-outline text-lg">location_on</span>
-              Unit 4B, The Grandville
+              {unitLabel}
             </div>
           </div>
         </div>

@@ -72,6 +72,64 @@
   --surface-blur: blur(12px);
 }
 
+/* ═══════════════════════════════════════════════
+   DARK MODE OVERRIDES
+   ═══════════════════════════════════════════════ */
+.dark {
+  --color-surface: #0f1117;
+  --color-surface-dim: #0a0d14;
+  --color-surface-bright: #1a1f2e;
+  --color-surface-container-lowest: #0d1118;
+  --color-surface-container-low: #141926;
+  --color-surface-container: #1b2132;
+  --color-surface-container-high: #222840;
+  --color-surface-container-highest: #2a3050;
+  --color-on-surface: #e8eaf6;
+  --color-on-surface-variant: #adb5d8;
+  --color-inverse-surface: #e2e6f4;
+  --color-inverse-on-surface: #2a313d;
+  --color-outline: #7b82a5;
+  --color-outline-variant: #3a4060;
+  --color-surface-tint: #8b8bff;
+  --color-primary: #a09bff;
+  --color-on-primary: #110078;
+  --color-primary-container: #2c1fad;
+  --color-on-primary-container: #e2dfff;
+  --color-inverse-primary: #3525cd;
+  --color-secondary: #c9b0ff;
+  --color-on-secondary: #370e83;
+  --color-secondary-container: #4e27be;
+  --color-on-secondary-container: #e9ddff;
+  --color-tertiary: #4cd7f6;
+  --color-on-tertiary: #003640;
+  --color-tertiary-container: #004d5b;
+  --color-on-tertiary-container: #acedff;
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffdad6;
+  --color-primary-fixed: #3a30d9;
+  --color-primary-fixed-dim: #2820b8;
+  --color-on-primary-fixed: #e2dfff;
+  --color-on-primary-fixed-variant: #c3c0ff;
+  --color-secondary-fixed: #5b2fd6;
+  --color-secondary-fixed-dim: #4620c0;
+  --color-on-secondary-fixed: #e9ddff;
+  --color-on-secondary-fixed-variant: #d0bcff;
+  --color-tertiary-fixed: #005e70;
+  --color-tertiary-fixed-dim: #00505f;
+  --color-on-tertiary-fixed: #acedff;
+  --color-on-tertiary-fixed-variant: #4cd7f6;
+  --color-background: #0f1117;
+  --color-on-background: #e8eaf6;
+  --color-surface-variant: #2a3050;
+}
+
+.dark body {
+  background-color: #0f1117;
+  color: #e8eaf6;
+}
+
 @layer base {
   body {
     @apply bg-background text-on-background font-sans antialiased;
@@ -114,8 +172,17 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
   }
 
+  .dark .glass-effect {
+    background-color: rgba(15, 17, 23, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
   .soft-shadow {
     box-shadow: 0 10px 30px -5px rgba(53, 37, 205, 0.15);
+  }
+
+  .dark .soft-shadow {
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
   }
 
   .primary-gradient, .gradient-bg {

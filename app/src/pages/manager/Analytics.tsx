@@ -22,6 +22,7 @@ interface AnalyticsData {
 export default function Analytics() {
   const [data, setData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [timeFilter, setTimeFilter] = useState<'30d' | 'quarter' | 'ytd'>('quarter');
 
   useEffect(() => {
     api.get('/analytics')
@@ -41,21 +42,39 @@ export default function Analytics() {
     );
   }
 
-  const maxRevenue = data?.monthlyRevenue?.length
-    ? Math.max(...data.monthlyRevenue.map(m => m.revenue), 1)
+  // Filter monthly revenue based on selected time period
+  const allMonths = data?.monthlyRevenue ?? [];
+  const filteredRevenue = timeFilter === '30d'
+    ? allMonths.slice(-1)
+    : timeFilter === 'quarter'
+    ? allMonths.slice(-3)
+    : allMonths; // YTD = all
+
+  const maxRevenue = filteredRevenue.length
+    ? Math.max(...filteredRevenue.map(m => m.revenue), 1)
     : 1;
 
   return (
     <div className="max-w-container-max mx-auto w-full flex flex-col gap-lg pb-xl">
-      <div className="flex justify-between items-end mb-sm">
+      <div className="flex flex-wrap justify-between items-end gap-md mb-sm">
         <div>
-          <h1 className="font-h1 text-h1 text-on-surface mb-xs">Performance Analytics</h1>
-          <p className="font-body-sm text-body-sm text-on-surface-variant">Track your portfolio health and revenue metrics.</p>
+          <h1 className="font-h1 text-h1 text-on-surface dark:text-white mb-xs">Performance Analytics</h1>
+          <p className="font-body-sm text-body-sm text-on-surface-variant dark:text-slate-400">Track your portfolio health and revenue metrics.</p>
         </div>
-        <div className="flex bg-surface-container-high rounded-lg p-1 shadow-inner">
-          <button className="px-4 py-1.5 rounded-md font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-variant transition-colors">30 Days</button>
-          <button className="px-4 py-1.5 rounded-md font-body-sm text-body-sm bg-surface-container-lowest text-primary shadow-sm font-semibold">This Quarter</button>
-          <button className="px-4 py-1.5 rounded-md font-body-sm text-body-sm text-on-surface-variant hover:bg-surface-variant transition-colors">YTD</button>
+        <div className="flex bg-surface-container-high dark:bg-slate-800 rounded-lg p-1 shadow-inner border border-outline-variant/20 dark:border-slate-700">
+          {([['30d', '30 Days'], ['quarter', 'This Quarter'], ['ytd', 'YTD']] as const).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setTimeFilter(key)}
+              className={`px-4 py-1.5 rounded-md font-body-sm text-body-sm transition-colors ${
+                timeFilter === key
+                  ? 'bg-surface-container-lowest dark:bg-slate-700 text-primary font-semibold shadow-sm'
+                  : 'text-on-surface-variant dark:text-slate-400 hover:bg-surface-variant dark:hover:bg-slate-700/50'
+              }`}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -107,7 +126,15 @@ export default function Analytics() {
             </button>
           </div>
           <div className="flex-1 flex items-end gap-2 h-64 mt-auto">
-            {(data?.monthlyRevenue ?? []).map((item, i) => {
+            {filteredRevenue.length === 0 ? (
+              <div className="flex-1 flex items-center justify-center text-on-surface-variant dark:text-slate-400">
+                <div className="text-center">
+                  <span className="material-symbols-outlined text-5xl mb-2 block text-outline">bar_chart</span>
+                  <p className="font-body-sm text-body-sm">No revenue data for this period</p>
+                </div>
+              </div>
+            ) : (
+              filteredRevenue.map((item, i) => {
               const heightPct = maxRevenue > 0 ? (item.revenue / maxRevenue) * 100 : 0;
               const isMax = item.revenue === maxRevenue && item.revenue > 0;
               return (
@@ -125,7 +152,8 @@ export default function Analytics() {
                   </span>
                 </div>
               );
-            })}
+            })
+            )}
           </div>
         </div>
         <div className="bg-surface-container-lowest rounded-xl soft-shadow p-md border border-outline-variant/20 flex flex-col">
